@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
@@ -11,19 +11,19 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.Cenas.Hud;
+import com.mygdx.game.MyGdxGame;
 
 public class MenuPrincipal implements Screen {
     private MyGdxGame jogo;
     private OrthographicCamera camera;
     private Viewport ViewPortCamera;
-    Texture texture;
+
     public MenuPrincipal(MyGdxGame jogo) {
         this.jogo = jogo;
-
         //Cria sistema de camera e resize
         camera = new OrthographicCamera();
         ViewPortCamera = new StretchViewport(800, 480, camera);
-        texture = new Texture("badlogic.jpg");
     }
     @Override
     public void show() {
@@ -34,9 +34,7 @@ public class MenuPrincipal implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        jogo.batch.begin();
-        jogo.batch.draw(texture, 0, 0);
-        jogo.batch.end();
+
     }
 
     @Override
