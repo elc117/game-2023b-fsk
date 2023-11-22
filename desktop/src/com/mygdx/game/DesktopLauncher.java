@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setWindowedMode(800, 480);
-		config.setTitle("Novo");
+		config.setTitle("Quarta colonia");
 		new Lwjgl3Application(new MyGdxGame(), config);
 	}
 }

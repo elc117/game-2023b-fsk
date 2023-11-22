@@ -16,29 +16,18 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 public class PlayGame implements Screen {
-
-    private float dinoX, dinoY;
-    private long tempoAnterior;
-    private Vector2 velocidade;
     private MyGdxGame jogo;
     SpriteBatch batch;
-    Texture dinoTexture;
 
-    private Sprite dino;
     private Hud hud;
+    private Dino dino;
     public PlayGame(MyGdxGame jogo) {
         this.jogo = jogo;
         batch = new SpriteBatch();
-        velocidade = new Vector2(0, 0);
-
-        dinoTexture = new Texture("Textures/dino.png");
-        dino = new Sprite(dinoTexture);
-        dino.setSize(dino.getWidth() / 1000, dino.getHeight() / 1000);
-        dino.setPosition(0, (float)Gdx.graphics.getHeight() / 2);
         hud = new Hud(jogo.batch);
 
-        dino.setPosition(0, 500);
-        dino.setX(0);
+        dino = new Dino();
+        dino.create();
     }
 
     @Override
@@ -52,13 +41,14 @@ public class PlayGame implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         jogo.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 
-        //updatePhysics();
-       // this.moveDino();
         batch.begin();
-        dino.draw(batch);
-        batch.end();
 
         hud.stage.draw();
+        dino.draw(batch);
+
+        batch.end();
+
+
     }
 
     @Override
@@ -84,30 +74,8 @@ public class PlayGame implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-        dinoTexture.dispose();
-
-    }
 
 
-    private void moveDino() {
-        if (Gdx.input.justTouched())
-            if (dinoY + 30 < Gdx.graphics.getHeight())
-              dinoY += 30;
-            else
-              dinoY = Gdx.graphics.getHeight() - 30;
-    }
-
-    private void updatePhysics() {
-        this.velocidade.y -= 0.5f;
-
-        this.dino.translate(velocidade.x, velocidade.y);
-
-        if (dino.getY() < 0) {
-            dino.setY(0);
-            this.velocidade.y = 0;
-        } else if (dino.getY() > Gdx.graphics.getHeight()) {
-            dino.setY(Gdx.graphics.getHeight());
-        }
     }
 
 }

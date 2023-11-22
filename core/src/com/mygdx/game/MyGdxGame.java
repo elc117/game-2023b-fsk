@@ -13,7 +13,6 @@ public class MyGdxGame extends Game {
 		batch = new SpriteBatch();
 		// Inicia com  o menu principal
 		setScreen(new MenuPrincipal(this));
-		//setScreen(new PlayGame(this));
 	}
 
 	@Override
