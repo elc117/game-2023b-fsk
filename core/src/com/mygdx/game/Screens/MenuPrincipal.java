@@ -6,13 +6,10 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -30,60 +27,98 @@ public class MenuPrincipal implements Screen {
     private MyGdxGame jogo;
     private SpriteBatch batch;
     private Stage stage;
-    private TextButton btIniciar;
-    private TextButton btPlacar;
+    private ImageButton btIniciar;
+    private ImageButton btPlacar;
+    private ImageButton labelJogar;
+    private ImageButton labelPlacar;
     Texture background;
     private OrthographicCamera camera;
     private Viewport ViewPortCamera;
+    private TextureRegionDrawable btIniciarImage;
+    private TextureRegionDrawable btPlacarImage;
+    private TextureRegionDrawable labelJogarImage;
+    private TextureRegionDrawable labelPlacarImage;
+
 
     public MenuPrincipal(MyGdxGame jogo) {
         batch = new SpriteBatch();
         this.jogo = jogo;
-        //Cria sistema de camera e resize
+        // Cria sistema de câmera e resize
         camera = new OrthographicCamera();
         ViewPortCamera = new StretchViewport(800, 480, camera);
 
         background = new Texture(Gdx.files.internal("MenuPrincipal/FundoIA.png"));
 
+        // Carrega as texturas dos botões e labels
+        btIniciarImage = new TextureRegionDrawable(new Texture("MenuPrincipal/Button.png"));
+        btPlacarImage = new TextureRegionDrawable(new Texture("MenuPrincipal/Button.png"));
+        labelJogarImage = new TextureRegionDrawable(new Texture("MenuPrincipal/LabelJogar.png"));
+        labelPlacarImage = new TextureRegionDrawable(new Texture("MenuPrincipal/LabelPlacar.png"));
     }
+
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        TextButton.TextButtonStyle estilo = new TextButton.TextButtonStyle();
-        estilo.font = new BitmapFont();
-        estilo.fontColor = Color.CYAN;
-        estilo.up = createButtonBackground(Color.DARK_GRAY);
-        estilo.down = createButtonBackground(Color.GRAY);
+        // Cria ImageButtons para os botões
+        btIniciar = new ImageButton(btIniciarImage);
+        btPlacar = new ImageButton(btPlacarImage);
 
-        // Cria o botao sde inicio
-        btIniciar = new TextButton("Iniciar", estilo);
-        btPlacar = new TextButton("Placar", estilo);
-        btIniciar.setPosition((float)Gdx.graphics.getWidth() / 2, (float)Gdx.graphics.getHeight() / 2 - 40);
+        // Define as posições dos botões considerando tamanhos e espaçamento
+
+
+        float buttonWidth = 150f;
+        float buttonHeight = 50f;
+        float labelWidth = 87f;
+        float labelHeight = 25f;
+
+        float centerX = Gdx.graphics.getWidth() / 2f - buttonWidth / 2;
+        float centerY = Gdx.graphics.getHeight() / 2f - buttonHeight / 2;
+
+        btIniciar.setSize(buttonWidth, buttonHeight);
+        btIniciar.setPosition(centerX, centerY);
+
+
         btIniciar.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y){
+            public void clicked(InputEvent event, float x, float y) {
                 jogo.setScreen(new PlayGame(jogo));
                 dispose();
             }
         });
-        btPlacar.setPosition((float) Gdx.graphics.getWidth() / 2, (float)Gdx.graphics.getHeight() / 2);
 
+        btPlacar.setSize(buttonWidth, buttonHeight);
+        btPlacar.setPosition(centerX, centerY - 100);
+
+        // Cria ImageButtons para as labels
+        labelJogar = new ImageButton(labelJogarImage);
+        labelPlacar = new ImageButton(labelPlacarImage);
+
+
+        //Define o tamanho das labels
+        labelJogar.setSize(labelWidth, labelHeight);
+        labelPlacar.setSize(labelWidth, labelHeight);
+
+        // Define as posições das labels centralizadas dentro dos botões
+        float labelX = btIniciar.getX() + (buttonWidth - labelWidth) / 2;
+        float labelJogarY = btIniciar.getY() + (buttonHeight - labelHeight) / 2;
+        float labelPlacarY = btPlacar.getY() + (buttonHeight - labelHeight) / 2;
+
+        labelJogar.setPosition(labelX, labelJogarY);
+        labelPlacar.setPosition(labelX, labelPlacarY);
+
+        // Imagem do titulo "Quarta Colonia"
+        Image titleImage = new Image(new Texture("MenuPrincipal/LabelQuartaColonia.png"));
+        titleImage.setSize(421f, 84f); // Ajuste o tamanho da imagem conforme necessário
+        float titleX = Gdx.graphics.getWidth() / 2f - titleImage.getWidth() / 2;
+        float titleY = Gdx.graphics.getHeight() - 120; // Ajuste a posição vertical conforme necessário
+        titleImage.setPosition(titleX, titleY);
+        // Adiciona os ImageButtons à cena
         stage.addActor(btIniciar);
         stage.addActor(btPlacar);
-
-    }
-
-    private Drawable createButtonBackground(Color color) {
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(color);
-        pixmap.fill();
-
-        // Crie um drawable com base na pixmap
-        Texture texture = new Texture(pixmap);
-        pixmap.dispose(); // Libere os recursos da pixmap
-
-        return new TextureRegionDrawable(new TextureRegion(texture));
+        stage.addActor(labelJogar);
+        stage.addActor(labelPlacar);
+        stage.addActor(titleImage);
     }
 
     @Override
