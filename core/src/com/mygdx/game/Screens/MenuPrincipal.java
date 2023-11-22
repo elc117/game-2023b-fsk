@@ -64,6 +64,7 @@ public class MenuPrincipal implements Screen {
         btIniciar.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y){
                 jogo.setScreen(new PlayGame(jogo));
+                dispose();
             }
         });
         btPlacar.setPosition((float) Gdx.graphics.getWidth() / 2, (float)Gdx.graphics.getHeight() / 2);
