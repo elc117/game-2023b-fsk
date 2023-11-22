@@ -12,7 +12,7 @@ public class Dino {
     Texture textureDino;
 
     Vector2 velocity = new Vector2();
-    float gravity = 0.1f;
+    float gravity = 0.2f;
     // Posições de localização e tamanho usando os dados de um retangulo
     Rectangle retangulo = new Rectangle(0, (float)Gdx.graphics.getHeight() / 2, 40, 40);
 
@@ -23,6 +23,17 @@ public class Dino {
     void draw(SpriteBatch batch) {
         velocity.y -= gravity; //Velocidade cai
         retangulo.y += velocity.y; //Associa a nova velocidade ao retangulo, assim é usado no futuro
+
+        // Pular
+        if (Gdx.input.justTouched()) {
+            velocity.y = 3.5f;
+        }
+
+        //Delimita o tamanho
+        if (retangulo.y >= Gdx.graphics.getHeight() - 20 || retangulo.y <= 0) {
+            // Perde o jogo, mas, por enquanto, volta ao inicio.
+            retangulo.y = (float)Gdx.graphics.getHeight() / 2;
+        }
 
         batch.draw(textureDino, retangulo.x, retangulo.y);
     }
