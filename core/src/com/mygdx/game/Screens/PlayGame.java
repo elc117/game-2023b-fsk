@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.Cenas.Hud;
 import com.mygdx.game.MyGdxGame;
 import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.math.Vector2;
 
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -18,6 +19,7 @@ public class PlayGame implements Screen {
 
     private float dinoX, dinoY;
     private long tempoAnterior;
+    private Vector2 velocidade;
     private MyGdxGame jogo;
     SpriteBatch batch;
     Texture dinoTexture;
@@ -27,26 +29,16 @@ public class PlayGame implements Screen {
     public PlayGame(MyGdxGame jogo) {
         this.jogo = jogo;
         batch = new SpriteBatch();
+        velocidade = new Vector2(0, 0);
 
         dinoTexture = new Texture("Textures/dino.png");
         dino = new Sprite(dinoTexture);
         dino.setSize(dino.getWidth() / 1000, dino.getHeight() / 1000);
+        dino.setPosition(0, (float)Gdx.graphics.getHeight() / 2);
         hud = new Hud(jogo.batch);
 
-        this.dinoX = 0;
-        this.dinoY = (float)Gdx.graphics.getHeight() / 2;
-
-        Timer.schedule(new Timer.Task(){
-            @Override
-            public void run() {
-                if (dinoY - 100 > 0)
-                  dinoY -= 30;
-                else
-                  dinoY = 0;
-            }
-        }, 0.5f, 0.5f);
-
-
+        dino.setPosition(0, 500);
+        dino.setX(0);
     }
 
     @Override
@@ -60,9 +52,10 @@ public class PlayGame implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         jogo.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 
-        this.moveDino();
+        //updatePhysics();
+       // this.moveDino();
         batch.begin();
-        batch.draw(dino, dinoX, dinoY, 35, 35);
+        dino.draw(batch);
         batch.end();
 
         hud.stage.draw();
@@ -102,6 +95,19 @@ public class PlayGame implements Screen {
               dinoY += 30;
             else
               dinoY = Gdx.graphics.getHeight() - 30;
+    }
+
+    private void updatePhysics() {
+        this.velocidade.y -= 0.5f;
+
+        this.dino.translate(velocidade.x, velocidade.y);
+
+        if (dino.getY() < 0) {
+            dino.setY(0);
+            this.velocidade.y = 0;
+        } else if (dino.getY() > Gdx.graphics.getHeight()) {
+            dino.setY(Gdx.graphics.getHeight());
+        }
     }
 
 }
