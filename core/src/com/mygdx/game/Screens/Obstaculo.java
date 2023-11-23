@@ -20,7 +20,7 @@ public class Obstaculo {
     Vector2 velocity = new Vector2();
 
     public Obstaculo() {
-        textureParede = new Texture(Gdx.files.internal("Textures/parede.png"));
+        textureParede = new Texture(Gdx.files.internal("Textures/osso.png"));
         Random random = new Random();
 
         minY = 30;
@@ -28,15 +28,15 @@ public class Obstaculo {
 
         this.paredeY = minY + (maxY - minY) * random.nextFloat(); // Sorteia um tamanho
 
-        retangulo = new Rectangle(Gdx.graphics.getWidth() + 30, 0, 20, this.paredeY);
+        retangulo = new Rectangle(Gdx.graphics.getWidth() + 200, 0, 20, this.paredeY);
 
-        velocity.x -= 4;
+        velocity.x -= 5;
     }
 
     void draw(SpriteBatch batch) {
         retangulo.x += velocity.x;
 
-        batch.draw(textureParede, retangulo.x, retangulo.y, 20, this.paredeY);
+        batch.draw(textureParede, retangulo.x, retangulo.y, 500, this.paredeY);
         batch.draw(textureParede, retangulo.x, retangulo.y, 20, this.paredeY);
     }
 }
