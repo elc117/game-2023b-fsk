@@ -37,5 +37,6 @@ public class Obstaculo {
         retangulo.x += velocity.x;
 
         batch.draw(textureParede, retangulo.x, retangulo.y, 20, this.paredeY);
+        batch.draw(textureParede, retangulo.x, retangulo.y, 20, this.paredeY);
     }
 }
