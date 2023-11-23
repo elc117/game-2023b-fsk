@@ -15,28 +15,30 @@ public class Obstaculo {
     private float minY;
     private float maxY;
 
-    Rectangle retangulo;
+    Rectangle retanguloParede; // Atua como um obstaculo
+    Rectangle retanguloPassagem; // Destinado a verificação, não atua como obstaculo
 
     Vector2 velocity = new Vector2();
 
     public Obstaculo() {
         textureParede = new Texture(Gdx.files.internal("Textures/parede.png"));
         Random random = new Random();
+        this.minY = 10;
+        this.maxY = Gdx.graphics.getHeight()  - 40;
 
-        minY = 30;
-        maxY = 340;
+        this.paredeY = minY + (maxY - minY) * random.nextFloat(); // Sorteia posição Y
+        retanguloPassagem = new Rectangle(Gdx.graphics.getWidth() + 60, paredeY, 80, 80);
 
-        this.paredeY = minY + (maxY - minY) * random.nextFloat(); // Sorteia um tamanho
-
-        retangulo = new Rectangle(Gdx.graphics.getWidth() + 30, 0, 20, this.paredeY);
-
-        velocity.x -= 4;
+        velocity.x = 4f;
     }
 
     void draw(SpriteBatch batch) {
-        retangulo.x += velocity.x;
+        retanguloPassagem.x -= velocity.x;
 
-        batch.draw(textureParede, retangulo.x, retangulo.y, 20, this.paredeY);
-        batch.draw(textureParede, retangulo.x, retangulo.y, 20, this.paredeY);
+        batch.draw(textureParede, retanguloPassagem.x, retanguloPassagem.y, 80, 80);
+    }
+
+    public float getPosition(){
+        return this.retanguloPassagem.x;
     }
 }

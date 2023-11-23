@@ -39,20 +39,20 @@ public class PlayGame implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //jogo.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 
-        addObstaculo();
+
 
         batch.begin();
 
         // Adiciona personagem dino
         dino.draw(batch);
-
-        // Adiciona obstaculos
-        for (Obstaculo ob: this.obstaculos) {
-            ob.draw(batch);
+        addObstaculo();
+        // Adiciona obstaculos na tela
+        if (!obstaculos.isEmpty()) {
+            for (Obstaculo ob : this.obstaculos) {
+                ob.draw(batch);
+            }
         }
-
         // Adiciona o chão
         addNextFloor();
         for (Floor i: floors) {
@@ -93,8 +93,24 @@ public class PlayGame implements Screen {
     }
 
     public void addObstaculo() {
-        this.obstaculos.add(new Obstaculo());
+        // Remove da lista os não visiveis
+        if (!obstaculos.isEmpty()) {
+            if (obstaculos.get(obstaculos.size() - 1).getPosition() + 80 < 200) {
+                obstaculos.add(new Obstaculo());
+            }
+
+            if (this.obstaculos.size() > 1) {
+                for (Obstaculo ob : obstaculos) {
+                    if (ob.getPosition() + 90 <= 0) {
+                        obstaculos.remove(ob);
+                    }
+                }
+            }
+        } else {
+            obstaculos.add(new Obstaculo());
+        }
     }
+
 
     public void addNextFloor() {
         // Remove da lista os não visiveis e adiciona outro, quando necessário.

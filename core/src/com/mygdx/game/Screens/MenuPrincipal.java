@@ -18,15 +18,12 @@ public class MenuPrincipal implements Screen {
     private Stage stage;
     private ImageButton btIniciar;
     private ImageButton btPlacar;
-    private ImageButton labelJogar;
-    private ImageButton labelPlacar;
     Texture background;
     private OrthographicCamera camera;
     private Viewport ViewPortCamera;
     private TextureRegionDrawable btIniciarImage;
     private TextureRegionDrawable btPlacarImage;
-    private TextureRegionDrawable labelJogarImage;
-    private TextureRegionDrawable labelPlacarImage;
+
 
 
     public MenuPrincipal(MyGdxGame jogo) {
@@ -39,10 +36,9 @@ public class MenuPrincipal implements Screen {
         background = new Texture(Gdx.files.internal("MenuPrincipal/FundoIA.png"));
 
         // Carrega as texturas dos botões e labels
-        btIniciarImage = new TextureRegionDrawable(new Texture("MenuPrincipal/Button.png"));
-        btPlacarImage = new TextureRegionDrawable(new Texture("MenuPrincipal/Button.png"));
-        labelJogarImage = new TextureRegionDrawable(new Texture("MenuPrincipal/LabelJogar.png"));
-        labelPlacarImage = new TextureRegionDrawable(new Texture("MenuPrincipal/LabelPlacar.png"));
+        btIniciarImage = new TextureRegionDrawable(new Texture("MenuPrincipal/btnJogar.png"));
+        btPlacarImage = new TextureRegionDrawable(new Texture("MenuPrincipal/btnPlacar.png"));
+
     }
 
     @Override
@@ -59,8 +55,7 @@ public class MenuPrincipal implements Screen {
 
         float buttonWidth = 150f;
         float buttonHeight = 50f;
-        float labelWidth = 87f;
-        float labelHeight = 25f;
+
 
         float centerX = Gdx.graphics.getWidth() / 2f - buttonWidth / 2;
         float centerY = Gdx.graphics.getHeight() / 2f - buttonHeight / 2;
@@ -71,22 +66,6 @@ public class MenuPrincipal implements Screen {
         btPlacar.setSize(buttonWidth, buttonHeight);
         btPlacar.setPosition(centerX, centerY - 100);
 
-        // Cria ImageButtons para as labels
-        labelJogar = new ImageButton(labelJogarImage);
-        labelPlacar = new ImageButton(labelPlacarImage);
-
-
-        //Define o tamanho das labels
-        labelJogar.setSize(labelWidth, labelHeight);
-        labelPlacar.setSize(labelWidth, labelHeight);
-
-        // Define as posições das labels centralizadas dentro dos botões
-        float labelX = btIniciar.getX() + (buttonWidth - labelWidth) / 2;
-        float labelJogarY = btIniciar.getY() + (buttonHeight - labelHeight) / 2;
-        float labelPlacarY = btPlacar.getY() + (buttonHeight - labelHeight) / 2;
-
-        labelJogar.setPosition(labelX, labelJogarY);
-        labelPlacar.setPosition(labelX, labelPlacarY);
 
         // Imagem do titulo "Quarta Colonia"
         Image titleImage = new Image(new Texture("MenuPrincipal/LabelQuartaColonia.png"));
@@ -97,8 +76,6 @@ public class MenuPrincipal implements Screen {
         // Adiciona os ImageButtons à cena
         stage.addActor(btIniciar);
         stage.addActor(btPlacar);
-        stage.addActor(labelJogar);
-        stage.addActor(labelPlacar);
         stage.addActor(titleImage);
     }
 
@@ -146,11 +123,11 @@ public class MenuPrincipal implements Screen {
     }
 
     private void visualization(){
-        if (btIniciar.isPressed() || labelJogar.isPressed()) {
+        if (btIniciar.isPressed()) {
             jogo.setScreen(new PlayGame(jogo));
         }
 
-        if (btPlacar.isPressed() || labelPlacar.isPressed()) {
+        if (btPlacar.isPressed()) {
             // Adicionar o menu de placar
         }
     }
