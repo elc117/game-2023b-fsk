@@ -30,7 +30,7 @@ public class Dino {
         }
 
         //Delimita o tamanho
-        if (retangulo.y >= Gdx.graphics.getHeight() - 20 || retangulo.y <= 0) {
+        if (retangulo.y >= Gdx.graphics.getHeight() - 40 || retangulo.y <= 0) {
             // Perde o jogo, mas, por enquanto, volta ao inicio.
             retangulo.y = (float)Gdx.graphics.getHeight() / 2;
         }

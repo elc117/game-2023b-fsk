@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class PlayGame implements Screen {
     private MyGdxGame jogo;
@@ -21,15 +22,17 @@ public class PlayGame implements Screen {
 
     private Hud hud;
     private Dino dino;
-    private Obstaculo obstaculo;
+
+    private ArrayList<Obstaculo> obstaculos;
     public PlayGame(MyGdxGame jogo) {
         this.jogo = jogo;
         batch = new SpriteBatch();
         hud = new Hud(jogo.batch);
 
+        obstaculos = new ArrayList<Obstaculo>();
+
         dino = new Dino();
         dino.create();
-        obstaculo = new Obstaculo();
     }
 
     @Override
@@ -43,11 +46,20 @@ public class PlayGame implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         jogo.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 
+
+        addObstaculo();
+
         batch.begin();
 
         hud.stage.draw();
+
+        // Adiciona personagem dino
         dino.draw(batch);
-        obstaculo.draw(batch);
+
+        // Adiciona obstaculos
+        for (Obstaculo ob: this.obstaculos) {
+            ob.draw(batch);
+        }
         batch.end();
 
 
@@ -76,8 +88,12 @@ public class PlayGame implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-
-
     }
+
+    public void addObstaculo() {
+        Obstaculo obstaculo1 = new Obstaculo();
+        this.obstaculos.add(obstaculo1);
+    }
+
 
 }
