@@ -17,7 +17,7 @@ public class Dino {
     Rectangle retangulo = new Rectangle(0, (float)Gdx.graphics.getHeight() / 2, 40, 40);
 
     void create() {
-        textureDino = new Texture(Gdx.files.internal("Textures/venetoraptor.png"));
+        textureDino = new Texture(Gdx.files.internal("Textures/dino.png"));
     }
 
     void draw(SpriteBatch batch) {

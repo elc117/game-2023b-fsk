@@ -45,4 +45,7 @@ public class Hud {
     }
 
 
+    public void addPoint(int pontos) {
+        this.pontos += pontos;
+    }
 }
