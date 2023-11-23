@@ -99,7 +99,7 @@ public class PlayGame implements Screen {
     public void addNextFloor() {
         // Remove da lista os não visiveis e adiciona outro, quando necessário.
         for (Floor i: floors) {
-            if ((i.getPosition() - 721 + 241) <= 480) {
+            if ((i.getPosition() + 721 + 241) <= 480) {
                 floors.add(new Floor());
                 floors.remove(i);
             }
