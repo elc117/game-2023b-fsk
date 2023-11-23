@@ -24,7 +24,6 @@ public class PlayGame implements Screen {
         obstaculos = new ArrayList<Obstaculo>();
 
         floors = new ArrayList<Floor>();
-        floors.add(new Floor());
 
         dino = new Dino();
         dino.create();
@@ -39,17 +38,18 @@ public class PlayGame implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //jogo.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-
-        addObstaculo();
 
         batch.begin();
+
+        // Verifica colisões
+        verifyColisions();
 
         // Adiciona personagem dino
         dino.draw(batch);
 
-        // Adiciona obstaculos
-        for (Obstaculo ob: this.obstaculos) {
+        // Adiciona obstaculos na tela
+        addObstaculo();
+        for (Obstaculo ob : this.obstaculos) {
             ob.draw(batch);
         }
 
@@ -63,8 +63,6 @@ public class PlayGame implements Screen {
         hud.draw(batch);
 
         batch.end();
-
-
     }
 
     @Override
@@ -92,17 +90,42 @@ public class PlayGame implements Screen {
         batch.dispose();
     }
 
-    public void addObstaculo() {
-        this.obstaculos.add(new Obstaculo());
+    private void addObstaculo() {
+        // Remove da lista os não visiveis
+        if (!obstaculos.isEmpty()) {
+            if (obstaculos.get(obstaculos.size() - 1).getPosition() + 80 < 200) {
+                obstaculos.add(new Obstaculo());
+            }
+
+            if (this.obstaculos.size() > 1) {
+                for (Obstaculo ob : obstaculos) {
+                    if (ob.getPosition() + 90 <= 0) {
+                        obstaculos.remove(ob);
+                        hud.addPoint(10);
+                    }
+                }
+            }
+        } else {
+            obstaculos.add(new Obstaculo());
+        }
     }
 
-    public void addNextFloor() {
+
+    private void addNextFloor() {
         // Remove da lista os não visiveis e adiciona outro, quando necessário.
-        for (Floor i: floors) {
-            if ((i.getPosition() + 721 + 241) <= 480) {
-                floors.add(new Floor());
-                floors.remove(i);
+        if (!floors.isEmpty()) {
+            for (Floor i: floors) {
+                if ((i.getPosition() + 721 + 241) <= 480) {
+                    floors.add(new Floor());
+                    floors.remove(i);
+                }
             }
+        } else {
+            floors.add(new Floor());
         }
+    }
+
+    private void verifyColisions() {
+
     }
 }

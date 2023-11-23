@@ -47,6 +47,7 @@ public class Hud {
         bfTempo.draw(batch, "Tempo: "+this.tempoCounter+"s", Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 1);
     }
 
+
     //Getters and Setters
     public void setPontos(int pontos) {
         this.pontos = pontos;

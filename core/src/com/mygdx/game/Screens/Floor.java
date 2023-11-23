@@ -33,4 +33,8 @@ public class Floor {
         return retangulo.x;
     }
 
+    public void setInitialPosition(float position) {
+        this.retangulo.x = position;
+    }
+
 }
