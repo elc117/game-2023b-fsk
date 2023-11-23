@@ -101,4 +101,7 @@ public class Hud {
             e.printStackTrace();
         }
     }
+    public void addPoint(int point) {
+        this.pontos += point;
+    }
 }
