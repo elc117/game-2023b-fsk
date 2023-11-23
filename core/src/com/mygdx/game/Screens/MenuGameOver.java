@@ -3,33 +3,38 @@ package com.mygdx.game.Screens;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MyGdxGame;
 
-public class MenuPrincipal implements Screen {
+public class MenuGameOver implements Screen {
     private MyGdxGame jogo;
     private SpriteBatch batch;
     private Stage stage;
-    private ImageButton btIniciar;
-    private ImageButton btPlacar;
+    private ImageButton btRestart;
+    private ImageButton btAddLeaderBoard;
     Texture background;
     private OrthographicCamera camera;
     private Viewport ViewPortCamera;
-    private TextureRegionDrawable btIniciarImage;
-    private TextureRegionDrawable btPlacarImage;
+    private TextureRegionDrawable btRestartImage;
+    private TextureRegionDrawable btAddLeaderBoardImage;
+    private Hud hud;
 
-    private String name; // Nome do jogador
 
 
-    public MenuPrincipal(MyGdxGame jogo) {
+    public MenuGameOver(MyGdxGame jogo, Hud hud) {
         batch = new SpriteBatch();
         this.jogo = jogo;
+        this.hud = hud;
+        batch = new SpriteBatch();
+
         // Cria sistema de câmera e resize
         camera = new OrthographicCamera();
         ViewPortCamera = new StretchViewport(800, 480, camera);
@@ -37,8 +42,10 @@ public class MenuPrincipal implements Screen {
         background = new Texture(Gdx.files.internal("MenuPrincipal/FundoIA.png"));
 
         // Carrega as texturas dos botões e labels
-        btIniciarImage = new TextureRegionDrawable(new Texture("MenuPrincipal/btnJogar.png"));
-        btPlacarImage = new TextureRegionDrawable(new Texture("MenuPrincipal/btnPlacar.png"));
+
+        btRestartImage = new TextureRegionDrawable(new Texture("MenuGameOver/BtnJogarNovamente.png"));
+
+        btAddLeaderBoardImage = new TextureRegionDrawable(new Texture("MenuGameOver/BtnAddLeaderBoard.png"));
 
     }
 
@@ -48,36 +55,64 @@ public class MenuPrincipal implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         // Cria ImageButtons para os botões
-        btIniciar = new ImageButton(btIniciarImage);
-        btPlacar = new ImageButton(btPlacarImage);
+        btRestart = new ImageButton(btRestartImage);
+        btAddLeaderBoard = new ImageButton(btAddLeaderBoardImage);
 
         // Define as posições dos botões considerando tamanhos e espaçamento
 
-
-        float buttonWidth = 150f;
-        float buttonHeight = 50f;
+        float buttonWidth = 200f;
+        float buttonHeight = 70f;
 
 
         float centerX = Gdx.graphics.getWidth() / 2f - buttonWidth / 2;
         float centerY = Gdx.graphics.getHeight() / 2f - buttonHeight / 2;
 
-        btIniciar.setSize(buttonWidth, buttonHeight);
-        btIniciar.setPosition(centerX, centerY);
+        btRestart.setSize(buttonWidth, buttonHeight);
+        btRestart.setPosition(centerX - 150, centerY - 140);
 
-        btPlacar.setSize(buttonWidth, buttonHeight);
-        btPlacar.setPosition(centerX, centerY - 100);
+        btAddLeaderBoard.setSize(buttonWidth, buttonHeight);
+        btAddLeaderBoard.setPosition(centerX + 150, centerY - 140);
 
 
         // Imagem do titulo "Quarta Colonia"
-        Image titleImage = new Image(new Texture("MenuPrincipal/LabelQuartaColonia.png"));
+        Image titleImage = new Image(new Texture("MenuGameOver/LabelGameOver.png"));
         titleImage.setSize(421f, 84f); // Ajuste o tamanho da imagem conforme necessário
         float titleX = Gdx.graphics.getWidth() / 2f - titleImage.getWidth() / 2;
         float titleY = Gdx.graphics.getHeight() - 120; // Ajuste a posição vertical conforme necessário
         titleImage.setPosition(titleX, titleY);
-        // Adiciona os ImageButtons à cena
-        stage.addActor(btIniciar);
-        stage.addActor(btPlacar);
+
+
+        // Imagem do titulo "ScoreBoard"
+        Image titleScore = new Image(new Texture("MenuGameOver/ScoreBoard.png"));
+        titleScore.setSize(350f, 144f); // Ajuste o tamanho da imagem conforme necessário
+        float titleScoreX = Gdx.graphics.getWidth() / 2f - titleScore.getWidth() / 2 - 25;
+        float titleScoreY = Gdx.graphics.getHeight() - 310; // Ajuste a posição vertical conforme necessário
+        titleScore.setPosition(titleScoreX, titleScoreY);
+
+        // Labels de pontuação, acertos e tempo
+        Label.LabelStyle style = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        style.font.getData().setScale(2f);
+
+        Label pontosLabel = new Label(String.valueOf(hud.getPontos()), style);
+        pontosLabel.setPosition(titleScoreX + 165, titleScoreY + 60);
+
+        Label acertosLabel = new Label(String.valueOf(hud.getAcertos()), style);
+        acertosLabel.setPosition(titleScoreX + 175, titleScoreY + 23);
+
+        Label tempoLabel = new Label(String.valueOf(hud.getTempoCounter()) + " sec", style);
+        tempoLabel.setPosition(titleScoreX + 160, titleScoreY + 100);
+
+
+
+
+        // Adiciona os ImageButtons e titles à cena
+        stage.addActor(btRestart);
+        stage.addActor(btAddLeaderBoard);
         stage.addActor(titleImage);
+        stage.addActor(titleScore);
+        stage.addActor(pontosLabel);
+        stage.addActor(acertosLabel);
+        stage.addActor(tempoLabel);
     }
 
     @Override
@@ -123,17 +158,12 @@ public class MenuPrincipal implements Screen {
     }
 
     private void visualization(){
-        if (btIniciar.isPressed()) {
+        if (btRestart.isPressed()) {
             jogo.setScreen(new PlayGame(jogo));
         }
 
-        if (btPlacar.isPressed()) {
-            // Adicionar o menu de placar
+        if (btAddLeaderBoard.isPressed()) {
+            jogo.setScreen(new MenuPrincipal(jogo));
         }
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 }
