@@ -21,6 +21,7 @@ public class PlayGame implements Screen {
 
     private Hud hud;
     private Dino dino;
+    private Obstaculo obstaculo;
     public PlayGame(MyGdxGame jogo) {
         this.jogo = jogo;
         batch = new SpriteBatch();
@@ -28,6 +29,7 @@ public class PlayGame implements Screen {
 
         dino = new Dino();
         dino.create();
+        obstaculo = new Obstaculo();
     }
 
     @Override
@@ -45,7 +47,7 @@ public class PlayGame implements Screen {
 
         hud.stage.draw();
         dino.draw(batch);
-
+        obstaculo.draw(batch);
         batch.end();
 
 
