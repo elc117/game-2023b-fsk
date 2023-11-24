@@ -54,9 +54,8 @@ public class PlayGame implements Screen {
         if(!Variaveis.perdeu) {
             verifyColisions();
         } else {
-            this.dispose();
+          //  this.dispose();
             jogo.setScreen(new MenuGameOver(jogo, this.hud));
-
         }
 
         // Adiciona os backgrounds
