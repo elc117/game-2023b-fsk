@@ -35,28 +35,40 @@ public class Obstaculo {
         this.maxY = Gdx.graphics.getHeight()  - 100;
 
         this.minTamanhoArea = 80;
-        this.maxTamanhoArea = Gdx.graphics.getHeight() * 0.35f; // Area livre de passagem de no max 65% da tela
+        this.maxTamanhoArea = Gdx.graphics.getHeight() * 0.35f; // Area livre de passagem de no max 35% da tela
 
-        this.areaLivre = minTamanhoArea + (maxTamanhoArea - minTamanhoArea) * random.nextFloat();
+        this.areaLivre = minTamanhoArea + (maxTamanhoArea - minTamanhoArea) * random.nextFloat(); // Sorteia uma area livre
 
         this.paredeY = minY + (maxY - minY) * random.nextFloat(); // Sorteia posição Y
         retanguloPassagem = new Rectangle(Gdx.graphics.getWidth() + 60, paredeY, 80, areaLivre);
 
         retanguloOssoInferior = new Rectangle(Gdx.graphics.getWidth() + 60, paredeY - 335, 84, 340);
         retanguloOssoSuperior = new Rectangle(Gdx.graphics.getWidth() + 60, paredeY + areaLivre, 64, 340);
-        velocity.x = 4f;
+        velocity.x = Variaveis.Velocity;
     }
 
     void draw(SpriteBatch batch) {
-        retanguloPassagem.x -= velocity.x;
+        if (!Variaveis.perdeu) {
+            retanguloPassagem.x -= velocity.x;
+            retanguloOssoSuperior.x -= velocity.x;
+            retanguloOssoInferior.x -= velocity.x;
+        }
+
         batch.draw(textureOsso, retanguloPassagem.x - 10, paredeY - 335, 84, 340);
         batch.draw(textureOsso, retanguloPassagem.x + 10, paredeY + areaLivre, 84, 340);
-       // batch.draw(textureParede, retanguloPassagem.x, retanguloPassagem.y, 80, areaLivre);
+       // batch.draw(textureParede, retanguloPassagem.x, retanguloPassagem.y, 80, areaLivre); //Descomente para debug
     }
 
     public float getPosition(){
         return this.retanguloPassagem.x;
     }
 
+    public Rectangle getOssoSuperior() {
+        return this.retanguloOssoSuperior;
+    }
+
+    public Rectangle getOssoInferior() {
+        return this.retanguloOssoInferior;
+    }
 
 }

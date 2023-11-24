@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
 
+import java.awt.datatransfer.FlavorEvent;
 import java.util.ArrayList;
 
 public class PlayGame implements Screen {
@@ -41,8 +42,9 @@ public class PlayGame implements Screen {
 
         batch.begin();
 
-        // Verifica colisões
-        verifyColisions();
+        // Verifica colisões, caso ainda não tenha ocorrido
+        if(!Variaveis.perdeu)
+            verifyColisions();
 
         // Adiciona personagem dino
         dino.draw(batch);
@@ -126,6 +128,15 @@ public class PlayGame implements Screen {
     }
 
     private void verifyColisions() {
-
+        // Percorre lista floors e obstaculos por colisões
+        for (Obstaculo ob : obstaculos) {
+            // Usa o overlaps para verificar colisões em ambos os ossos
+            if (dino.getDinoRectangle().overlaps(ob.getOssoInferior()) || // Colisão com o osso inferior
+                dino.getDinoRectangle().overlaps(ob.getOssoSuperior())) { // Colisão com o osso superior
+                    // Para toda a movimentação, pois perdeu o jogo
+                    Variaveis.perdeu = true;
+                    break;
+            }
+        }
     }
 }
