@@ -35,6 +35,8 @@ public class MenuGameOver implements Screen {
         this.hud = hud;
         batch = new SpriteBatch();
 
+        Variaveis.setPerdeu(false);
+
         // Cria sistema de câmera e resize
         camera = new OrthographicCamera();
         ViewPortCamera = new StretchViewport(800, 480, camera);
@@ -158,11 +160,14 @@ public class MenuGameOver implements Screen {
     }
 
     private void visualization(){
+        Variaveis.setPerdeu(false);
         if (btRestart.isPressed()) {
+            this.dispose();
             jogo.setScreen(new PlayGame(jogo));
         }
 
         if (btAddLeaderBoard.isPressed()) {
+            this.dispose();
             jogo.setScreen(new MenuPrincipal(jogo));
         }
     }

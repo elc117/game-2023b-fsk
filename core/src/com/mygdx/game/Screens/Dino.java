@@ -40,7 +40,12 @@ public class Dino {
         batch.draw(textureDino, retangulo.x, retangulo.y);
     }
 
+    void dispose() {
+        textureDino.dispose();
+    }
     public Rectangle getDinoRectangle() {
         return this.retangulo;
     }
+
+
 }

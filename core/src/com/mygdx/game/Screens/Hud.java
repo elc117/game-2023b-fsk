@@ -38,7 +38,8 @@ public class Hud {
     }
 
     void draw(SpriteBatch batch) {
-        this.tempoCounter = (TimeUtils.millis() - tempoAnterior) / 1000;
+        if (!Variaveis.perdeu)
+            this.tempoCounter = (TimeUtils.millis() - tempoAnterior) / 1000;
 
 
 

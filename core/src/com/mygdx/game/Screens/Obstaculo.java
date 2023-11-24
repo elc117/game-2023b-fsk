@@ -59,6 +59,12 @@ public class Obstaculo {
        // batch.draw(textureParede, retanguloPassagem.x, retanguloPassagem.y, 80, areaLivre); //Descomente para debug
     }
 
+    void dispose() {
+        textureParede.dispose();
+        textureOsso.dispose();
+    }
+
+
     public float getPosition(){
         return this.retanguloPassagem.x;
     }

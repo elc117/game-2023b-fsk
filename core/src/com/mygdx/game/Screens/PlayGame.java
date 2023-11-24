@@ -43,8 +43,13 @@ public class PlayGame implements Screen {
         batch.begin();
 
         // Verifica colisões, caso ainda não tenha ocorrido
-        if(!Variaveis.perdeu)
+        if(!Variaveis.perdeu) {
             verifyColisions();
+        } else {
+            this.dispose();
+            jogo.setScreen(new MenuGameOver(jogo, this.hud));
+
+        }
 
         // Adiciona personagem dino
         dino.draw(batch);
@@ -89,6 +94,8 @@ public class PlayGame implements Screen {
 
     @Override
     public void dispose() {
+        obstaculos.clear();
+        floors.clear();
         batch.dispose();
     }
 
