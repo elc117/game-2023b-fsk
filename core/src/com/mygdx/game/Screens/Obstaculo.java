@@ -56,7 +56,7 @@ public class Obstaculo {
 
         batch.draw(textureOsso, retanguloPassagem.x - 10, paredeY - 335, 84, 340);
         batch.draw(textureOsso, retanguloPassagem.x + 10, paredeY + areaLivre, 84, 340);
-       // batch.draw(textureParede, retanguloPassagem.x, retanguloPassagem.y, 80, areaLivre); //Descomente para debug
+        //batch.draw(textureParede, retanguloPassagem.x, retanguloPassagem.y, 80, areaLivre); //Descomente para debug
     }
 
     void dispose() {

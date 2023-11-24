@@ -17,6 +17,10 @@ public class PlayGame implements Screen {
     private Dino dino;
     private ArrayList<Obstaculo> obstaculos;
     private ArrayList<Floor> floors;
+    private ArrayList<BackgroundImage> backgrounds;
+
+    private ArrayList<Sombras> sombras;
+
     public PlayGame(MyGdxGame jogo) {
         this.jogo = jogo;
         batch = new SpriteBatch();
@@ -25,6 +29,10 @@ public class PlayGame implements Screen {
         obstaculos = new ArrayList<Obstaculo>();
 
         floors = new ArrayList<Floor>();
+
+        backgrounds = new ArrayList<BackgroundImage>();
+
+        sombras = new ArrayList<Sombras>();
 
         dino = new Dino();
         dino.create();
@@ -37,7 +45,7 @@ public class PlayGame implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor((float)49/255, (float)48/255, (float)23/255, 0.65f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
@@ -51,6 +59,17 @@ public class PlayGame implements Screen {
 
         }
 
+        // Adiciona os backgrounds
+        addBackground();
+        for (BackgroundImage image: backgrounds) {
+            image.draw(batch);
+        }
+
+        // Adiciona as sombras
+            addSombras();
+            for (Sombras s : sombras) {
+                s.draw(batch);
+            }
         // Adiciona personagem dino
         dino.draw(batch);
 
@@ -96,6 +115,7 @@ public class PlayGame implements Screen {
     public void dispose() {
         obstaculos.clear();
         floors.clear();
+        sombras.clear();
         batch.dispose();
     }
 
@@ -133,6 +153,35 @@ public class PlayGame implements Screen {
             floors.add(new Floor());
         }
     }
+
+    private void addBackground() {
+        if (!backgrounds.isEmpty()) {
+           for (BackgroundImage image: backgrounds) {
+                if (image.getPosition() + 1000 <= 0) {
+                    backgrounds.add(new BackgroundImage(0));
+                    backgrounds.remove(image);
+                }
+           }
+        } else {
+            backgrounds.add(new BackgroundImage(0));
+        }
+    }
+
+    private void addSombras() {
+        if(!sombras.isEmpty()) {
+            for (Sombras s: sombras) {
+                if(s.getPosition() + 800 == 0) {
+                    sombras.add(new Sombras(800));
+                    sombras.remove(s);
+                    break;
+                }
+            }
+        } else {
+            sombras.add(new Sombras());
+            sombras.add(new Sombras(800));
+        }
+    }
+
 
     private void verifyColisions() {
         // Percorre lista floors e obstaculos por colisões

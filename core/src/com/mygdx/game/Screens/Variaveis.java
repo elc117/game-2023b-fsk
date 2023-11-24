@@ -4,9 +4,14 @@ import com.badlogic.gdx.Gdx;
 
 public class Variaveis {
     // Largura da tela
-    public static float WIDTH = 480;
+    public static float WIDTH = 800;
     // Altura da tela
-    public static float HEIGTH = 800;
+    public static float HEIGTH = 480;
+    // Altura das imagens de background comuns
+    public static float ImageHeigth = 480;
+    // Largura das imagens de background comuns
+    public static float ImageWidth = 800;
+
     // Ponto X de inicio do dino
     public static float DinoX = 20;
     // Ponto Y de inicio do dino
