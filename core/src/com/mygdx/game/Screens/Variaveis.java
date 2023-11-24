@@ -10,6 +10,7 @@ public class Variaveis {
     // Ponto X de inicio do dino
     public static float DinoX = 20;
     // Ponto Y de inicio do dino
+
     public static float DinoY = (float)Gdx.graphics.getHeight() / 2;
     // Antigravidade do dino, quando acionada
     public static float DinoAntigravity = 3.5f;
