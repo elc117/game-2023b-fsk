@@ -16,7 +16,14 @@ public class Floor {
     public Floor(){
         textureFloor = new Texture(Gdx.files.internal("Textures/Floor.png"));
 
-        retangulo = new Rectangle(0, 0, 721, 10);
+        retangulo = new Rectangle(0, 0, 800, 10.1f);
+        velocity.x = Variaveis.Velocity;
+    }
+
+    public Floor(float initialPosition) {
+        textureFloor = new Texture(Gdx.files.internal("Textures/Floor.png"));
+
+        retangulo = new Rectangle(initialPosition, 0, 800, 11.1f);
         velocity.x = Variaveis.Velocity;
     }
 
@@ -25,8 +32,7 @@ public class Floor {
         if (!Variaveis.perdeu)
           retangulo.x -= velocity.x;
 
-        batch.draw(textureFloor, retangulo.x, retangulo.y, 721, 10);
-        batch.draw(textureFloor, retangulo.x + 721, retangulo.y, 721, 10);
+        batch.draw(textureFloor, retangulo.x, retangulo.y, 800, 11.1f);
     }
 
     public float getPosition() {

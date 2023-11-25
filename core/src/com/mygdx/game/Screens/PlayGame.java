@@ -3,7 +3,10 @@ package com.mygdx.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.mygdx.game.MyGdxGame;
 
 import java.awt.datatransfer.FlavorEvent;
@@ -12,19 +15,22 @@ import java.util.ArrayList;
 public class PlayGame implements Screen {
     private MyGdxGame jogo;
     SpriteBatch batch;
-
     private Hud hud;
     private Dino dino;
     private ArrayList<Obstaculo> obstaculos;
     private ArrayList<Floor> floors;
     private ArrayList<BackgroundImage> backgrounds;
-
     private ArrayList<Sombras> sombras;
+    Texture background;
+
+    ParticleEffect particle;
 
     public PlayGame(MyGdxGame jogo) {
         this.jogo = jogo;
         batch = new SpriteBatch();
         hud = new Hud();
+
+        background = new Texture(Gdx.files.internal("Images/0.png"));
 
         obstaculos = new ArrayList<Obstaculo>();
 
@@ -45,47 +51,19 @@ public class PlayGame implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor((float)49/255, (float)48/255, (float)23/255, 0.65f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        Pergunta pergunta = new Pergunta(0);
 
         batch.begin();
 
-        // Verifica colisões, caso ainda não tenha ocorrido
-        if(!Variaveis.perdeu) {
-            verifyColisions();
-        } else {
-          //  this.dispose();
-            jogo.setScreen(new MenuGameOver(jogo, this.hud));
-        }
+        batch.draw(background, 0, 0);  // Adiciona background
 
-        // Adiciona os backgrounds
-        addBackground();
-        for (BackgroundImage image: backgrounds) {
-            image.draw(batch);
-        }
+        addCenario(); // Adiciona todos os objetos, caso não existir colisão
 
-        // Adiciona as sombras
-            addSombras();
-            for (Sombras s : sombras) {
-                s.draw(batch);
-            }
-        // Adiciona personagem dino
-        dino.draw(batch);
+        dino.draw(batch); // Adiciona personagem dino
 
-        // Adiciona obstaculos na tela
-        addObstaculo();
-        for (Obstaculo ob : this.obstaculos) {
-            ob.draw(batch);
-        }
-
-        // Adiciona o chão
-        addNextFloor();
-        for (Floor i: floors) {
-            i.draw(batch);
-        }
-
-        // Adiciona o HUD
-        hud.draw(batch);
+        hud.draw(batch); // Adiciona o HUD
 
         batch.end();
     }
@@ -118,6 +96,42 @@ public class PlayGame implements Screen {
         batch.dispose();
     }
 
+    private void addCenario() {
+
+        // Verifica colisões, caso ainda não tenha ocorrido
+        if(!Variaveis.perdeu) {
+            verifyColisions();
+        } else {
+            //  this.dispose();
+            jogo.setScreen(new MenuGameOver(jogo, this.hud));
+        }
+
+        // Adiciona os backgrounds
+        // addBackground();
+        for (BackgroundImage image: backgrounds) {
+            image.draw(batch);
+        }
+
+        // Adiciona as sombras
+        addSombras();
+        for (Sombras s : sombras) {
+            s.draw(batch);
+        }
+
+        // Adiciona obstaculos na tela
+        addObstaculo();
+        for (Obstaculo ob : this.obstaculos) {
+            ob.draw(batch);
+        }
+
+        // Adiciona o chão
+        addNextFloor();
+        for (Floor i: floors) {
+            i.draw(batch);
+        }
+    }
+
+
     private void addObstaculo() {
         // Remove da lista os não visiveis
         if (!obstaculos.isEmpty()) {
@@ -143,13 +157,15 @@ public class PlayGame implements Screen {
         // Remove da lista os não visiveis e adiciona outro, quando necessário.
         if (!floors.isEmpty()) {
             for (Floor i: floors) {
-                if ((i.getPosition() + 721 + 241) <= 480) {
-                    floors.add(new Floor());
+                if (i.getPosition() + 800 <= 0) {
+                    floors.add(new Floor(800));
                     floors.remove(i);
+                    break;
                 }
             }
         } else {
             floors.add(new Floor());
+            floors.add(new Floor(800));
         }
     }
 

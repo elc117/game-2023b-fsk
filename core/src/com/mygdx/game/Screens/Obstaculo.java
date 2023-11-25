@@ -42,8 +42,8 @@ public class Obstaculo {
         this.paredeY = minY + (maxY - minY) * random.nextFloat(); // Sorteia posição Y
         retanguloPassagem = new Rectangle(Gdx.graphics.getWidth() + 60, paredeY, 80, areaLivre);
 
-        retanguloOssoInferior = new Rectangle(Gdx.graphics.getWidth() + 60, paredeY - 335, 84, 340);
-        retanguloOssoSuperior = new Rectangle(Gdx.graphics.getWidth() + 60, paredeY + areaLivre, 64, 340);
+        retanguloOssoInferior = new Rectangle(Gdx.graphics.getWidth() + 60, paredeY - 335, 67, 340);
+        retanguloOssoSuperior = new Rectangle(Gdx.graphics.getWidth() + 60, paredeY + areaLivre, 69, 340);
         velocity.x = Variaveis.Velocity;
     }
 

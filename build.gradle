@@ -11,8 +11,6 @@ buildscript {
     dependencies {
         classpath 'org.docstr:gwt-gradle-plugin:1.1.29'
         classpath 'org.gretty:gretty:3.0.7'
-        
-
     }
 }
 
@@ -50,6 +48,7 @@ project(":html") {
 
     dependencies {
         implementation project(":core")
+        implementation 'com.opencsv:opencsv:5.8'
         api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
         api "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
         api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
@@ -62,6 +61,7 @@ project(":core") {
 
 
     dependencies {
+        implementation 'com.opencsv:opencsv:5.8'
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         
     }
@@ -73,6 +73,7 @@ project(":desktop") {
 
     dependencies {
         implementation project(":core")
+        implementation 'com.opencsv:opencsv:5.8'
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         
