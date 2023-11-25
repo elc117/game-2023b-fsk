@@ -1,10 +1,11 @@
-package com.mygdx.game.Screens;
+package com.mygdx.game.Cenas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.Screens.Variaveis;
 
 import java.util.Random;
 
@@ -25,7 +26,7 @@ public class BackgroundImage {
         velocity.y = 0.4f;
     }
 
-    void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch) {
 
 
         Random random = new Random();

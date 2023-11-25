@@ -1,4 +1,4 @@
-package com.mygdx.game.Screens;
+package com.mygdx.game.Cenas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -15,6 +15,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.mygdx.game.Screens.Variaveis;
+
 import java.awt.*;
 
 public class Hud {
@@ -37,14 +39,14 @@ public class Hud {
        this.tempoCounter = 0;
     }
 
-    void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch) {
         if (!Variaveis.perdeu)
             this.tempoCounter = (TimeUtils.millis() - tempoAnterior) / 1000;
 
 
 
-        bfPontos.draw(batch, "Pontos: "+this.pontos, 10, Gdx.graphics.getHeight() - 1);
-        bfAcertos.draw(batch, "Acertos: "+this.acertos, (float)Gdx.graphics.getWidth() / 2 - 10, Gdx.graphics.getHeight() - 1);
+        bfPontos.draw(batch, "Pontos: "+Variaveis.pontos, 10, Gdx.graphics.getHeight() - 1);
+        bfAcertos.draw(batch, "Acertos: "+Variaveis.acertos, (float)Gdx.graphics.getWidth() / 2 - 10, Gdx.graphics.getHeight() - 1);
         bfTempo.draw(batch, "Tempo: "+this.tempoCounter+"s", Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 1);
     }
 

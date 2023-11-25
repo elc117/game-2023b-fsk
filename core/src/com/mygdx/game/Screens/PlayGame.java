@@ -6,21 +6,24 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
+import com.mygdx.game.Cenas.Floor;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.Cenas.*;
+import com.mygdx.game.Question.Quiz;
 
-import java.awt.datatransfer.FlavorEvent;
 import java.util.ArrayList;
 
 public class PlayGame implements Screen {
     private MyGdxGame jogo;
-    SpriteBatch batch;
+    public SpriteBatch batch;
     private Hud hud;
     private Dino dino;
     private ArrayList<Obstaculo> obstaculos;
     private ArrayList<Floor> floors;
     private ArrayList<BackgroundImage> backgrounds;
     private ArrayList<Sombras> sombras;
+
+    private Quiz quiz;
     Texture background;
 
     ParticleEffect particle;
@@ -40,6 +43,8 @@ public class PlayGame implements Screen {
 
         sombras = new ArrayList<Sombras>();
 
+        this.quiz = new Quiz();
+
         dino = new Dino();
         dino.create();
     }
@@ -53,8 +58,6 @@ public class PlayGame implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        Pergunta pergunta = new Pergunta(0);
-
         batch.begin();
 
         batch.draw(background, 0, 0);  // Adiciona background
@@ -64,6 +67,8 @@ public class PlayGame implements Screen {
         dino.draw(batch); // Adiciona personagem dino
 
         hud.draw(batch); // Adiciona o HUD
+
+        controlQuiz();
 
         batch.end();
     }
@@ -107,7 +112,6 @@ public class PlayGame implements Screen {
         }
 
         // Adiciona os backgrounds
-        // addBackground();
         for (BackgroundImage image: backgrounds) {
             image.draw(batch);
         }
@@ -143,7 +147,7 @@ public class PlayGame implements Screen {
                 for (Obstaculo ob : obstaculos) {
                     if (ob.getPosition() + 90 <= 0) {
                         obstaculos.remove(ob);
-                        hud.addPoint(10);
+                        Variaveis.pontos += 10;
                     }
                 }
             }
@@ -208,6 +212,12 @@ public class PlayGame implements Screen {
                     Variaveis.perdeu = true;
                     break;
             }
+        }
+    }
+
+    private void controlQuiz() {
+        if (!quiz.virifyColisions(dino.getDinoRectangle())) {
+            quiz.draw(batch);
         }
     }
 }

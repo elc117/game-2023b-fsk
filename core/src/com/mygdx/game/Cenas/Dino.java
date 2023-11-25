@@ -1,4 +1,4 @@
-package com.mygdx.game.Screens;
+package com.mygdx.game.Cenas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.Screens.Variaveis;
 
 public class Dino {
     Texture textureDino;
@@ -15,11 +16,11 @@ public class Dino {
     // Posições de localização e tamanho usando os dados de um retangulo
     Rectangle retangulo = new Rectangle(Variaveis.DinoX, Variaveis.DinoY, 40, 40);
 
-    void create() {
+    public void create() {
         textureDino = new Texture(Gdx.files.internal("Textures/dino.png"));
     }
 
-    void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch) {
 
         if (!Variaveis.perdeu) {
             velocity.y -= Variaveis.Gravity; //Velocidade cai

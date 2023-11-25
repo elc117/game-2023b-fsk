@@ -1,10 +1,11 @@
-package com.mygdx.game.Screens;
+package com.mygdx.game.Cenas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.Screens.Variaveis;
 
 public class Floor {
     private Texture textureFloor;
@@ -27,7 +28,7 @@ public class Floor {
         velocity.x = Variaveis.Velocity;
     }
 
-    void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch) {
 
         if (!Variaveis.perdeu)
           retangulo.x -= velocity.x;

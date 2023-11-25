@@ -24,12 +24,18 @@ public class Variaveis {
     // Velocidade
     public static float Velocity = 4f;
 
+    // Index da ultima questão. Usada para não haver repetições próximas
+    public static int lastIndex = 0;
+    // Numero de questões existentes
+    public static int numPerguntas = 1;
 
     // Altura do chão
     public static float floorHeight = 10;
     // Indica se o jogador perdeu ou não
     public static boolean perdeu = false;
 
+    public static int pontos = 0;
+    public static int acertos = 0;
 
 
     public static void setPerdeu(boolean status) {

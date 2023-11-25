@@ -12,6 +12,5 @@ public class DesktopLauncher {
 		config.setWindowedMode(800, 480);
 		config.setTitle("Quarta colonia");
 		new Lwjgl3Application(new MyGdxGame(), config);
-
 	}
 }
