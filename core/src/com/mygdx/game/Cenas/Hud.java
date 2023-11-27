@@ -28,15 +28,16 @@ public class Hud {
     BitmapFont bfPontos;
     BitmapFont bfAcertos;
     BitmapFont bfTempo;
-    public Hud() {
-       bfPontos = new BitmapFont();
-       bfAcertos = new BitmapFont();
-       bfTempo = new BitmapFont();
-       tempoAnterior = TimeUtils.millis();
 
-       this.pontos = 0;
-       this.acertos = 0;
-       this.tempoCounter = 0;
+    public Hud() {
+        bfPontos = new BitmapFont();
+        bfAcertos = new BitmapFont();
+        bfTempo = new BitmapFont();
+        tempoAnterior = TimeUtils.millis();
+
+        this.pontos = 0;
+        this.acertos = 0;
+        this.tempoCounter = 0;
     }
 
     public void draw(SpriteBatch batch) {
@@ -44,10 +45,9 @@ public class Hud {
             this.tempoCounter = (TimeUtils.millis() - tempoAnterior) / 1000;
 
 
-
-        bfPontos.draw(batch, "Pontos: "+Variaveis.pontos, 10, Gdx.graphics.getHeight() - 1);
-        bfAcertos.draw(batch, "Acertos: "+Variaveis.acertos, (float)Gdx.graphics.getWidth() / 2 - 10, Gdx.graphics.getHeight() - 1);
-        bfTempo.draw(batch, "Tempo: "+this.tempoCounter+"s", Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 1);
+        bfPontos.draw(batch, "Pontos: " + Variaveis.pontos, 10, Gdx.graphics.getHeight() - 1);
+        bfAcertos.draw(batch, "Acertos: " + Variaveis.acertos, (float) Gdx.graphics.getWidth() / 2 - 10, Gdx.graphics.getHeight() - 1);
+        bfTempo.draw(batch, "Tempo: " + this.tempoCounter + "s", Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 1);
     }
 
 
@@ -103,8 +103,5 @@ public class Hud {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    public void addPoint(int point) {
-        this.pontos += point;
     }
 }
