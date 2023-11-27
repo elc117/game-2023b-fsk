@@ -6,12 +6,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.Cenas.Floor;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.Cenas.*;
 import com.mygdx.game.Question.Quiz;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Timer;
 
 public class PlayGame implements Screen {
     private MyGdxGame jogo;
@@ -23,7 +26,10 @@ public class PlayGame implements Screen {
     private ArrayList<BackgroundImage> backgrounds;
     private ArrayList<Sombras> sombras;
 
-    private Quiz quiz;
+    private ArrayList<Quiz> perguntas;
+
+    private long tempoInicial;
+    private int IdImageQuiz;
     Texture background;
 
     ParticleEffect particle;
@@ -32,6 +38,12 @@ public class PlayGame implements Screen {
         this.jogo = jogo;
         batch = new SpriteBatch();
         hud = new Hud();
+        Variaveis.acertos = 0;
+        Variaveis.pontos = 0;
+        Variaveis.perdeu = false;
+
+
+        this.tempoInicial = TimeUtils.millis();
 
         background = new Texture(Gdx.files.internal("Images/0.png"));
 
@@ -43,7 +55,9 @@ public class PlayGame implements Screen {
 
         sombras = new ArrayList<Sombras>();
 
-        this.quiz = new Quiz();
+        perguntas = new ArrayList<Quiz>();
+        this.IdImageQuiz = -1;
+        perguntas.add(new Quiz());
 
         dino = new Dino();
         dino.create();
@@ -112,9 +126,7 @@ public class PlayGame implements Screen {
         }
 
         // Adiciona os backgrounds
-        for (BackgroundImage image: backgrounds) {
-            image.draw(batch);
-        }
+        //addImageQuiz();
 
         // Adiciona as sombras
         addSombras();
@@ -140,7 +152,8 @@ public class PlayGame implements Screen {
         // Remove da lista os não visiveis
         if (!obstaculos.isEmpty()) {
             if (obstaculos.get(obstaculos.size() - 1).getPosition() + 80 < 200) {
-                obstaculos.add(new Obstaculo());
+                if (Variaveis.addNextObstacle)
+                    obstaculos.add(new Obstaculo());
             }
 
             if (this.obstaculos.size() > 1) {
@@ -148,11 +161,13 @@ public class PlayGame implements Screen {
                     if (ob.getPosition() + 90 <= 0) {
                         obstaculos.remove(ob);
                         Variaveis.pontos += 10;
+                        Variaveis.acertos += 1;
                     }
                 }
             }
         } else {
-            obstaculos.add(new Obstaculo());
+            if (Variaveis.addNextObstacle)
+                obstaculos.add(new Obstaculo());
         }
     }
 
@@ -216,8 +231,41 @@ public class PlayGame implements Screen {
     }
 
     private void controlQuiz() {
-        if (!quiz.virifyColisions(dino.getDinoRectangle())) {
-            quiz.draw(batch);
+        int last = perguntas.size() - 1;
+        if ((float) (TimeUtils.millis() - this.tempoInicial) / 1000 >= Variaveis.tempoEntrePerguntas && perguntas.get(last).getPosition() > 0) {
+            if (perguntas.get(last).getPosition() > 0 && !perguntas.get(last).virifyColisions(dino.getDinoRectangle())) {
+                Variaveis.addNextObstacle = false;
+                IdImageQuiz = perguntas.get(last).getId();
+                perguntas.get(last).draw(batch);
+            } else {
+                Variaveis.addNextObstacle = true;
+                IdImageQuiz = -1;
+                this.tempoInicial = TimeUtils.millis();
+                perguntas.get(last).setActive(false);
+                perguntas.add(new Quiz());
+            }
+
+        } else {
+            Variaveis.addNextObstacle = true;
         }
+
+        // Mantem no maximo 2 no vetor
+        if (perguntas.size() > 1) {
+            perguntas.remove(perguntas.get(0));
+        }
+    }
+
+    private void addImageQuiz() {
+        if (IdImageQuiz != -1) {
+            batch.draw(new Texture(Gdx.files.internal("Images/"+perguntas.get(perguntas.size() - 1).getId()+".png")), 0, 0);
+        }
+    }
+    private boolean hasObstacles() {
+        for (Obstaculo o : obstaculos) {
+            if (o.getPosition() > 0 && o.getPosition() < Gdx.graphics.getWidth() - 100) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -43,10 +43,7 @@ public class Pergunta {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-
-
 
     public int getNumAlternativas() {
         return this.alternativas.size();
@@ -59,4 +56,9 @@ public class Pergunta {
     public String getEnunciado() {
         return this.enunciado;
     }
+
+    public String getAlternativa(int index) {
+        return this.alternativas.get(index);
+    }
+
 }

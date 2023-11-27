@@ -95,10 +95,10 @@ public class MenuGameOver implements Screen {
         Label.LabelStyle style = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
         style.font.getData().setScale(2f);
 
-        Label pontosLabel = new Label(String.valueOf(hud.getPontos()), style);
+        Label pontosLabel = new Label(String.valueOf(Variaveis.pontos), style);
         pontosLabel.setPosition(titleScoreX + 165, titleScoreY + 60);
 
-        Label acertosLabel = new Label(String.valueOf(hud.getAcertos()), style);
+        Label acertosLabel = new Label(String.valueOf(Variaveis.acertos), style);
         acertosLabel.setPosition(titleScoreX + 175, titleScoreY + 23);
 
         Label tempoLabel = new Label(String.valueOf(hud.getTempoCounter()) + " sec", style);
@@ -163,6 +163,8 @@ public class MenuGameOver implements Screen {
         Variaveis.setPerdeu(false);
         if (btRestart.isPressed()) {
             this.dispose();
+            Variaveis.pontos = 0; // Reinicia toda a pontuação
+            Variaveis.acertos = 0; // Reinicia todos os acertos
             jogo.setScreen(new PlayGame(jogo));
         }
 
