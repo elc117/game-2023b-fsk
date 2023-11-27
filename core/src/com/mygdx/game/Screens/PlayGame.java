@@ -32,6 +32,10 @@ public class PlayGame implements Screen {
         this.jogo = jogo;
         batch = new SpriteBatch();
         hud = new Hud();
+        Variaveis.acertos = 0;
+        Variaveis.pontos = 0;
+        Variaveis.perdeu = false;
+
 
         background = new Texture(Gdx.files.internal("Images/0.png"));
 
@@ -148,6 +152,7 @@ public class PlayGame implements Screen {
                     if (ob.getPosition() + 90 <= 0) {
                         obstaculos.remove(ob);
                         Variaveis.pontos += 10;
+                        Variaveis.acertos += 1;
                     }
                 }
             }
