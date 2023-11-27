@@ -163,6 +163,8 @@ public class MenuGameOver implements Screen {
         Variaveis.setPerdeu(false);
         if (btRestart.isPressed()) {
             this.dispose();
+            Variaveis.pontos = 0; // Reinicia toda a pontuação
+            Variaveis.acertos = 0; // Reinicia todos os acertos
             jogo.setScreen(new PlayGame(jogo));
         }
 

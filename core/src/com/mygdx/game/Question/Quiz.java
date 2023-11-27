@@ -15,11 +15,13 @@ import java.util.ArrayList;
 // selecionar aleatoriamente as questões e verificar se o jogador
 // acertou.
 public class Quiz {
-    Texture imagePergunta;
+    private boolean isActive = true;
     Texture texturePergunta;
-
     ArrayList<Rectangle> retangulos;
+
+    ArrayList<Rectangle> ossosMeio;
     private float posicao;
+    private int ID;
     private boolean colision;
     private BitmapFont font;
 
@@ -30,23 +32,26 @@ public class Quiz {
     public Quiz() {
         // Atualiza a questão
         retangulos = new ArrayList<Rectangle>();
+        ossosMeio = new ArrayList<Rectangle>();
 
         font = new BitmapFont();
 
         texturePergunta = new Texture(Gdx.files.internal("Textures/Choice.png"));
-        this.imagePergunta = new Texture(Gdx.files.internal("Images/"+1+".png"));
+        this.ID = Variaveis.lastIndex + 1;
 
         this.pergunta = new Pergunta(Variaveis.lastIndex);
 
         colision = false;
 
-        this.posicao = (float) (Gdx.graphics.getHeight() * 0.20);
+        // Cria os pontos de referencia para as questões
+        this.posicao = 38;
         for (int i = 0; i < pergunta.getNumAlternativas(); i++) {
-            this.retangulos.add(new Rectangle(Gdx.graphics.getWidth(), (int)posicao, 85, 60));
-            posicao += 128;
+            this.retangulos.add(new Rectangle(Gdx.graphics.getWidth(), (int)posicao, texturePergunta.getWidth(), texturePergunta.getHeight()));
+            posicao += 165;
         }
 
-        velocity.x = Variaveis.Velocity;
+
+        velocity.x = Variaveis.PerguntaVelocity;
 
         if (Variaveis.lastIndex + 1 > Variaveis.numPerguntas - 1) {
             Variaveis.lastIndex = 0;
@@ -61,15 +66,22 @@ public class Quiz {
                 r.x -= velocity.x;
             }
 
-            GlyphLayout layout = new GlyphLayout();
-            layout.setText(font, pergunta.getEnunciado());
+            for (Rectangle osso : ossosMeio) {
+                osso.x -= velocity.x;
+            }
 
-            float fontPosition = ((float)Gdx.graphics.getWidth() / 2) - layout.width / 2;
+            // Adiciona o enunciado
+            float fontPosition = ((float)Gdx.graphics.getWidth() / 2) - getCenterWidth(pergunta.getEnunciado()); // Centralização
 
             font.draw(batch, pergunta.getEnunciado(), fontPosition, 30);
 
+            // Adiciona a pergunta
+            int i = 0;
             for (Rectangle r : this.retangulos) {
-                batch.draw(texturePergunta, r.x, r.y, 85, 60);
+                batch.draw(texturePergunta, r.x, r.y, texturePergunta.getWidth(), texturePergunta.getHeight());
+                font.draw(batch, pergunta.getAlternativa(i), r.x + ((float)texturePergunta.getWidth() / 2) - (getCenterWidth(pergunta.getAlternativa(i))),
+                r.y + 45);
+                i++;
             }
         }
     }
@@ -88,19 +100,43 @@ public class Quiz {
                 i++;
             }
 
-            if (pergunta.getCerta() == i) {
+            if (pergunta.getCerta() == i && colided) {
                 Variaveis.pontos += 100;
                 Variaveis.acertos++;
             } else {
-                if (Variaveis.pontos - 100 < 0) {
+                if (Variaveis.pontos - 100 < 0 && colided) {
                     Variaveis.pontos = 0;
                 } else {
-                    Variaveis.pontos -= 100;
+                    if (this.isActive && colided)
+                        Variaveis.pontos -= 100;
                 }
             }
         }
-
         return colided;
     }
+
+    public float getPosition() {
+        return this.retangulos.get(0).x;
+    }
+
+    public void setActive(boolean status) {
+        this.isActive = status;
+    }
+
+    public boolean getActive() {
+        return this.isActive;
+    }
+
+    public int getId() {
+        return this.ID;
+    }
+
+    private float getCenterWidth (String alternativa) {
+        GlyphLayout layout = new GlyphLayout();
+        layout.setText(font, alternativa);
+
+        return layout.width / 2;
+    }
+
 
 }

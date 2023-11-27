@@ -22,7 +22,12 @@ public class Variaveis {
     // Gravidade
     public static float Gravity = 0.2f;
     // Velocidade
+
+    public static float PerguntaVelocity = 2f;
     public static float Velocity = 4f;
+
+
+
 
     // Index da ultima questão. Usada para não haver repetições próximas
     public static int lastIndex = 0;
@@ -36,6 +41,10 @@ public class Variaveis {
 
     public static int pontos = 0;
     public static int acertos = 0;
+
+    public static float tempoEntrePerguntas = 12;
+
+    public static boolean addNextObstacle = true;
 
 
     public static void setPerdeu(boolean status) {
