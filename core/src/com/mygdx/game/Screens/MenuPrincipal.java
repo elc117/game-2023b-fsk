@@ -115,7 +115,7 @@ public class MenuPrincipal implements Screen {
             jogo.setScreen(new PlayGame(jogo));
         }
         if (btPlacar.isPressed()) {
-            // Adicionar o menu de placar
+            jogo.setScreen(new Placar(jogo));
         }
     }
     public void setName(String name) {
