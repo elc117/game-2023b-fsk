@@ -12,7 +12,7 @@ public class Variaveis {
     // Ponto Y de inicio do dino
     public static float DinoY = (float)Gdx.graphics.getHeight() / 2;
     // Antigravidade do dino, quando acionada
-    public static float DinoAntigravity = 3.5f;
+    public static float DinoAntigravity = 4f;
     // Gravidade
     public static float Gravity = 0.2f;
     // Velocidade das perguntas
@@ -41,3 +41,5 @@ public class Variaveis {
     }
 
 }
+
+

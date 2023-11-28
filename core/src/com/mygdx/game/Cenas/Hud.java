@@ -73,7 +73,7 @@ public class Hud {
         return this.tempoCounter;
     }
 
-    public void salvarLeaderboard(String nome) {
+    public void salvarLeaderboard(String nome, long tempoCounter){
         FileHandle file = Gdx.files.local("LeaderBoard.csv");
         // Verifique se o arquivo já existe
         boolean fileExists = file.exists();
@@ -91,9 +91,9 @@ public class Hud {
                     .append(',')
                     .append(String.valueOf(tempoCounter))
                     .append(',')
-                    .append(String.valueOf(pontos))
+                    .append(String.valueOf(Variaveis.pontos))
                     .append(',')
-                    .append(String.valueOf(acertos))
+                    .append(String.valueOf(Variaveis.acertos))
                     .append('\n');
             // Feche o FileWriter
             fileWriter.close();

@@ -29,6 +29,9 @@ public class MenuGameOver implements Screen {
     private TextureRegionDrawable btAddLeaderBoardImage;
     private Hud hud;
     private ImageButton btMenu;
+    private String name;
+
+    private Long tempoCounter;
 
     public MenuGameOver(MyGdxGame jogo, Hud hud) {
         batch = new SpriteBatch();
@@ -109,7 +112,8 @@ public class MenuGameOver implements Screen {
         Label acertosLabel = new Label(String.valueOf(Variaveis.acertos), style);
         acertosLabel.setPosition(titleScoreX + 175, titleScoreY + 23);
 
-        Label tempoLabel = new Label(String.valueOf(hud.getTempoCounter()) + " sec", style);
+        tempoCounter = hud.getTempoCounter();
+        Label tempoLabel = new Label(String.valueOf(tempoCounter) + " s", style);
         tempoLabel.setPosition(titleScoreX + 160, titleScoreY + 100);
 
         // Adiciona os ImageButtons e titles à cena
@@ -169,6 +173,8 @@ public class MenuGameOver implements Screen {
         }
         if (btAddLeaderBoard.isPressed()) {
             this.dispose();
+            hud.salvarLeaderboard(name, tempoCounter);
+            //Falta receber o nome ainda
             jogo.setScreen(new MenuPrincipal(jogo));
         }
     }

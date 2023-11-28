@@ -143,16 +143,17 @@ public class Placar implements Screen {
 
             String[] values;
             while ((values = reader.readNext()) != null) {
-                String nome = values[0];
-                int tempoEmSegundos = Integer.parseInt(values[1]);
-                int pontos = Integer.parseInt(values[2]);
-                int acertos = Integer.parseInt(values[3]);
+                if (values.length >= 4) {
+                    String nome = values[0];
+                    int tempoEmSegundos = Integer.parseInt(values[1]);
+                    int pontos = Integer.parseInt(values[2]);
+                    int acertos = Integer.parseInt(values[3]);
 
-                // Convertendo tempo de segundos para minutos
-                int tempoEmMinutos = tempoEmSegundos / 60;
+                    // Convertendo tempo de segundos para minutos
 
-                Jogador jogador = new Jogador(nome, tempoEmMinutos, pontos, acertos);
-                jogadores.add(jogador);
+                    Jogador jogador = new Jogador(nome, tempoEmSegundos, pontos, acertos);
+                    jogadores.add(jogador);
+                }
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -176,6 +177,7 @@ public class Placar implements Screen {
 
         return jogadores;
     }
+
 
     @Override
     public void resize(int width, int height) {
