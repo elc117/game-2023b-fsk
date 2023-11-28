@@ -10,31 +10,27 @@ import com.mygdx.game.Screens.Variaveis;
 public class Sombras {
     Texture textureShadow;
     Rectangle retangulo;
-
     Vector2 velocity = new Vector2();
     public Sombras() {
         textureShadow = new Texture(Gdx.files.internal("Textures/shadows.png"));
 
-        retangulo = new Rectangle(0, 0, 800, 172);
+        retangulo = new Rectangle(0, 0, Variaveis.WIDTH, 172);
 
         velocity.x = Variaveis.Velocity;
     }
-
     public Sombras(float inicialPosition) {
         textureShadow = new Texture(Gdx.files.internal("Textures/shadows.png"));
 
-        retangulo = new Rectangle(inicialPosition, 0, 800, 172);
+        retangulo = new Rectangle(inicialPosition, 0, Variaveis.WIDTH, 172);
 
         velocity.x = Variaveis.Velocity;
     }
-
     public void draw(SpriteBatch batch) {
         if(!Variaveis.perdeu)
             retangulo.x -= velocity.x;
 
-        batch.draw(textureShadow, retangulo.x, retangulo.y, 800, 172);
+        batch.draw(textureShadow, retangulo.x, retangulo.y, Variaveis.WIDTH, 172);
     }
-
     public float getPosition() {
         return retangulo.x;
     }

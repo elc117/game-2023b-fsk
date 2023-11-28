@@ -7,45 +7,34 @@ public class Variaveis {
     public static float WIDTH = 800;
     // Altura da tela
     public static float HEIGTH = 480;
-    // Altura das imagens de background comuns
-    public static float ImageHeigth = 480;
-    // Largura das imagens de background comuns
-    public static float ImageWidth = 800;
-
     // Ponto X de inicio do dino
     public static float DinoX = 20;
     // Ponto Y de inicio do dino
-
     public static float DinoY = (float)Gdx.graphics.getHeight() / 2;
     // Antigravidade do dino, quando acionada
     public static float DinoAntigravity = 3.5f;
     // Gravidade
     public static float Gravity = 0.2f;
-    // Velocidade
-
-    public static float PerguntaVelocity = 2f;
-    public static float Velocity = 4f;
-
-
-
-
+    // Velocidade das perguntas
+    public static float PerguntaVelocity = 1f;
+    // Velocidade geral
+    public static float Velocity = 5.5f;
     // Index da ultima questão. Usada para não haver repetições próximas
     public static int lastIndex = 0;
     // Numero de questões existentes
-    public static int numPerguntas = 1;
-
+    public static int numPerguntas = 13;
     // Altura do chão
     public static float floorHeight = 10;
     // Indica se o jogador perdeu ou não
     public static boolean perdeu = false;
-
+    // Pontos do jogador
     public static int pontos = 0;
+    // Perguntas acertadas
     public static int acertos = 0;
-
+    // Tempo minimo entre cada ocorrencia da pergunta
     public static float tempoEntrePerguntas = 12;
-
+    // Variavel de controle. Usada para bloquear a geração de obstaculos durante as perguntas
     public static boolean addNextObstacle = true;
-
 
     public static void setPerdeu(boolean status) {
         perdeu = status;

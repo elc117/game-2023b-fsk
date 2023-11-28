@@ -23,7 +23,6 @@ public class MenuPrincipal implements Screen {
     private Viewport ViewPortCamera;
     private TextureRegionDrawable btIniciarImage;
     private TextureRegionDrawable btPlacarImage;
-
     private String name; // Nome do jogador
 
 
@@ -32,7 +31,7 @@ public class MenuPrincipal implements Screen {
         this.jogo = jogo;
         // Cria sistema de câmera e resize
         camera = new OrthographicCamera();
-        ViewPortCamera = new StretchViewport(800, 480, camera);
+        ViewPortCamera = new StretchViewport(Variaveis.WIDTH, Variaveis.HEIGTH, camera);
 
         background = new Texture(Gdx.files.internal("MenuPrincipal/FundoIA.png"));
 
@@ -41,7 +40,6 @@ public class MenuPrincipal implements Screen {
         btPlacarImage = new TextureRegionDrawable(new Texture("MenuPrincipal/btnPlacar.png"));
 
     }
-
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
@@ -52,11 +50,8 @@ public class MenuPrincipal implements Screen {
         btPlacar = new ImageButton(btPlacarImage);
 
         // Define as posições dos botões considerando tamanhos e espaçamento
-
-
         float buttonWidth = 150f;
         float buttonHeight = 50f;
-
 
         float centerX = Gdx.graphics.getWidth() / 2f - buttonWidth / 2;
         float centerY = Gdx.graphics.getHeight() / 2f - buttonHeight / 2;
@@ -66,7 +61,6 @@ public class MenuPrincipal implements Screen {
 
         btPlacar.setSize(buttonWidth, buttonHeight);
         btPlacar.setPosition(centerX, centerY - 100);
-
 
         // Imagem do titulo "Quarta Colonia"
         Image titleImage = new Image(new Texture("MenuPrincipal/LabelQuartaColonia.png"));
@@ -79,7 +73,6 @@ public class MenuPrincipal implements Screen {
         stage.addActor(btPlacar);
         stage.addActor(titleImage);
     }
-
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -94,23 +87,19 @@ public class MenuPrincipal implements Screen {
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
-
     @Override
     public void resize(int width, int height) {
         // Aplica a configuração definida de resize
         ViewPortCamera.update(width, height);
     }
-
     @Override
     public void pause() {
 
     }
-
     @Override
     public void resume() {
 
     }
-
     @Override
     public void hide() {
 
@@ -121,19 +110,15 @@ public class MenuPrincipal implements Screen {
         background.dispose();
         batch.dispose();
     }
-
     private void visualization(){
         if (btIniciar.isPressed()) {
             jogo.setScreen(new PlayGame(jogo));
         }
-
         if (btPlacar.isPressed()) {
             // Adicionar o menu de placar
         }
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
 }
