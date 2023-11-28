@@ -1,6 +1,9 @@
 package com.mygdx.game.Cenas;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -11,6 +14,7 @@ public class Dino {
     Texture textureDino;
     Texture textureDinoFalling; // Textura para o personagem caindo
     Texture textureDinoJumping; // Textura para o personagem subindo
+    Sound soundPulo;
     boolean isFalling = false;
     boolean isJumping = false;
     Vector2 velocity = new Vector2();
@@ -21,6 +25,7 @@ public class Dino {
         textureDino = new Texture(Gdx.files.internal("Textures/dino.png"));
         textureDinoFalling = new Texture(Gdx.files.internal("Textures/dino_caindo.png"));
         textureDinoJumping = new Texture(Gdx.files.internal("Textures/dino_subindo.png"));
+        soundPulo = Gdx.audio.newSound(Gdx.files.internal("Sounds/pulo.wav"));
     }
     public void draw(SpriteBatch batch) {
         if (!Variaveis.perdeu) {
@@ -29,6 +34,7 @@ public class Dino {
 
             // Pular
             if (Gdx.input.justTouched()) {
+                soundPulo.play(Variaveis.SoundVolume);
                 velocity.y = Variaveis.DinoAntigravity;
             }
         }
@@ -65,6 +71,7 @@ public class Dino {
         textureDino.dispose();
         textureDinoFalling.dispose();
         textureDinoJumping.dispose();
+        soundPulo.dispose();
     }
     public Rectangle getDinoRectangle() {
         return this.retangulo;

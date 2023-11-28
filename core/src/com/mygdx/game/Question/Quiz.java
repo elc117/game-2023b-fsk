@@ -1,6 +1,8 @@
 package com.mygdx.game.Question;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -18,8 +20,9 @@ public class Quiz {
     private boolean isActive = true;
     Texture texturePergunta;
     Texture textureBackgroundPergunta;
+    Sound certoAudio;
+    Sound erradoAudio;
     ArrayList<Rectangle> retangulos;
-
     ArrayList<Rectangle> ossosMeio;
     private float posicao;
     private boolean colision;
@@ -38,6 +41,9 @@ public class Quiz {
 
         texturePergunta = new Texture(Gdx.files.internal("Textures/Choice.png"));
         textureBackgroundPergunta = new Texture(Gdx.files.internal("Textures/backgroundChoice.png"));
+
+        certoAudio = Gdx.audio.newSound(Gdx.files.internal("Sounds/certo.mp3"));
+        erradoAudio = Gdx.audio.newSound(Gdx.files.internal("Sounds/errado.mp3"));
 
         this.pergunta = new Pergunta(Variaveis.lastIndex);
 
@@ -66,7 +72,6 @@ public class Quiz {
             for (Rectangle osso : ossosMeio) {
                 osso.x -= velocity.x;
             }
-
             // Adiciona o enunciado
             float fontPosition = ((float)Gdx.graphics.getWidth() / 2) - getCenterWidth(pergunta.getEnunciado()); // Centralização
             batch.draw(textureBackgroundPergunta, 0, 11);
@@ -97,14 +102,18 @@ public class Quiz {
             }
 
             if (pergunta.getCerta() == i && colided) {
+                certoAudio.play(Variaveis.SoundVolume);
                 Variaveis.pontos += 100;
                 Variaveis.acertos++;
             } else {
                 if (Variaveis.pontos - 100 < 0 && colided) {
+                    erradoAudio.play(Variaveis.SoundVolume);
                     Variaveis.pontos = 0;
                 } else {
-                    if (this.isActive && colided)
+                    if (this.isActive && colided) {
+                        erradoAudio.play(Variaveis.SoundVolume);
                         Variaveis.pontos -= 100;
+                    }
                 }
             }
         }

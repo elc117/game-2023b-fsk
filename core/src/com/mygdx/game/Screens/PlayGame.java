@@ -1,26 +1,23 @@
 package com.mygdx.game.Screens;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.Cenas.Floor;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.Cenas.*;
 import com.mygdx.game.Question.Quiz;
-
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Timer;
 
 public class PlayGame implements Screen {
+    Sound audioColision;
     private OrthographicCamera camera;
     private MyGdxGame jogo;
     public SpriteBatch batch;
@@ -49,6 +46,8 @@ public class PlayGame implements Screen {
         camera.update();
 
         background = new Texture(Gdx.files.internal("Images/0.png"));
+
+        audioColision = Gdx.audio.newSound(Gdx.files.internal("Sounds/colision.ogg"));
 
         obstaculos = new ArrayList<Obstaculo>();
 
@@ -117,8 +116,6 @@ public class PlayGame implements Screen {
         // Verifica colisões, caso ainda não tenha ocorrido
         if(!Variaveis.perdeu) {
             verifyColisions();
-        } else {
-           // jogo.setScreen(new MenuGameOver(jogo, this.hud));
         }
         // Adiciona as sombras
         addSombras();
@@ -149,7 +146,6 @@ public class PlayGame implements Screen {
                     if (ob.getPosition() + 90 <= 0) {
                         obstaculos.remove(ob);
                         Variaveis.pontos += 10;
-                        Variaveis.acertos += 1;
                     }
                 }
             }
@@ -224,6 +220,8 @@ public class PlayGame implements Screen {
     private void controlCamera() {
         if (Variaveis.perdeu) {
             if (Gdx.graphics.getDeltaTime() > 0.002) {
+                audioColision.play(Variaveis.SoundVolume);
+
                 jogo.setScreen(new MenuGameOver(jogo, hud));
             }
         }

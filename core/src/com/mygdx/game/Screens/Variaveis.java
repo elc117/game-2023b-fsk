@@ -19,6 +19,8 @@ public class Variaveis {
     public static float PerguntaVelocity = 1f;
     // Velocidade geral
     public static float Velocity = 5.5f;
+    // Volume dos sons
+    public static float SoundVolume = 0.1f;
     // Index da ultima questão. Usada para não haver repetições próximas
     public static int lastIndex = 0;
     // Numero de questões existentes
