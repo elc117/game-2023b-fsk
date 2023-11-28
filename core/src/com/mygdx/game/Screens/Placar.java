@@ -10,11 +10,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.opencsv.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -22,6 +21,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MyGdxGame;
 import com.opencsv.exceptions.CsvValidationException;
+
 
 import java.io.File;
 import java.io.FileReader;
@@ -66,7 +66,15 @@ public class Placar implements Screen {
             }
         });
 
+
+        // Imagem do titulo "ScoreBoard"
+        Image titlePlacar = new Image(new Texture("MenuPrincipal/layoutPlacar.png"));
+        titlePlacar.setSize(500f, 330f); // Ajuste o tamanho da imagem conforme necessário
+        float titleScoreX = Gdx.graphics.getWidth() / 2f - titlePlacar.getWidth() / 2;
+        float titleScoreY = Gdx.graphics.getHeight() - 420f; // Ajuste a posição vertical conforme necessário
+        titlePlacar.setPosition(titleScoreX, titleScoreY);
         stage.addActor(btVoltar);
+        stage.addActor(titlePlacar);
     }
 
     @Override
@@ -87,28 +95,42 @@ public class Placar implements Screen {
     private void exibirPlacar() {
         Table table = new Table();
         table.setFillParent(true);
-        table.top().padTop(120f);
+        table.top().padTop(170f);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
 
-        Label labelTitulo = new Label("PLACAR", labelStyle);
-        labelTitulo.setFontScale(2f);
-        table.add(labelTitulo).colspan(3).padBottom(20f).row();
+        int maxRows = 10;
+        int displayedRows = Math.min(jogadores.size, maxRows);
 
-        table.add(new Label("NOME", labelStyle)).padRight(50f);
-        table.add(new Label("PONTOS", labelStyle)).padRight(50f);
-        table.add(new Label("TEMPO", labelStyle)).padRight(50f);
-        table.add(new Label("ACERTOS", labelStyle)).padBottom(20f).row();
+        float espacamento = 5f;  // Ajuste o valor conforme necessário para o espaçamento desejado
 
-        for (Jogador jogador : jogadores) {
-            table.add(new Label(jogador.getNome(), labelStyle)).padRight(50f);
-            table.add(new Label(String.valueOf(jogador.getPontos()), labelStyle)).padRight(50f);
-            table.add(new Label(String.valueOf(jogador.getTempo()), labelStyle)).padRight(50f);
-            table.add(new Label(String.valueOf(jogador.getAcertos()), labelStyle)).padBottom(20f).row();
+        for (int i = 0; i < displayedRows; i++) {
+            Jogador jogador = jogadores.get(i);
+
+            Label nomeLabel = new Label(jogador.getNome(), labelStyle);
+            table.add(nomeLabel).padBottom(espacamento).padLeft(-10f);  // Ajuste o valor conforme necessário para o espaçamento horizontal
+
+            Label pontosLabel = new Label(String.valueOf(jogador.getPontos()), labelStyle);
+            table.add(pontosLabel).padBottom(espacamento).padLeft(100f);  // Ajuste o valor conforme necessário para o espaçamento horizontal
+
+            Label tempoLabel = new Label(String.valueOf(jogador.getTempo()) + "s", labelStyle);
+            table.add(tempoLabel).padBottom(espacamento).padLeft(110f);  // Ajuste o valor conforme necessário para o espaçamento horizontal
+
+            Label acertosLabel = new Label(String.valueOf(jogador.getAcertos()), labelStyle);
+            table.add(acertosLabel).padBottom(espacamento).padLeft(110f);  // Ajuste o valor conforme necessário para o espaçamento horizontal
+
+            // Adiciona uma nova linha para a próxima entrada
+            table.row();
         }
 
         stage.addActor(table);
     }
+
+
+
+
+
+
 
     private Array<Jogador> carregarJogadores() {
         Array<Jogador> jogadores = new Array<>();
@@ -122,11 +144,14 @@ public class Placar implements Screen {
             String[] values;
             while ((values = reader.readNext()) != null) {
                 String nome = values[0];
-                int tempo = Integer.parseInt(values[1]);
+                int tempoEmSegundos = Integer.parseInt(values[1]);
                 int pontos = Integer.parseInt(values[2]);
                 int acertos = Integer.parseInt(values[3]);
 
-                Jogador jogador = new Jogador(nome, tempo, pontos, acertos);
+                // Convertendo tempo de segundos para minutos
+                int tempoEmMinutos = tempoEmSegundos / 60;
+
+                Jogador jogador = new Jogador(nome, tempoEmMinutos, pontos, acertos);
                 jogadores.add(jogador);
             }
         } catch (IOException | CsvValidationException e) {
@@ -151,6 +176,7 @@ public class Placar implements Screen {
 
         return jogadores;
     }
+
     @Override
     public void resize(int width, int height) {
         ViewPortCamera.update(width, height);

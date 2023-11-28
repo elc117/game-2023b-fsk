@@ -5,8 +5,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -26,6 +28,7 @@ public class MenuGameOver implements Screen {
     private TextureRegionDrawable btRestartImage;
     private TextureRegionDrawable btAddLeaderBoardImage;
     private Hud hud;
+    private ImageButton btMenu;
 
 
 
@@ -60,6 +63,17 @@ public class MenuGameOver implements Screen {
         btRestart = new ImageButton(btRestartImage);
         btAddLeaderBoard = new ImageButton(btAddLeaderBoardImage);
 
+        //Botão para voltar ao menu inicial
+        btMenu= new ImageButton(new TextureRegionDrawable(new Texture("MenuGameOver/btnMenu.png")));
+        btMenu.setSize(150f, 50f);
+        btMenu.setPosition(20, Gdx.graphics.getHeight() - 70);
+
+        btMenu.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                jogo.setScreen(new MenuPrincipal(jogo));
+                dispose();
+            }
+        });
         // Define as posições dos botões considerando tamanhos e espaçamento
 
         float buttonWidth = 200f;
@@ -110,6 +124,7 @@ public class MenuGameOver implements Screen {
         // Adiciona os ImageButtons e titles à cena
         stage.addActor(btRestart);
         stage.addActor(btAddLeaderBoard);
+        stage.addActor(btMenu);
         stage.addActor(titleImage);
         stage.addActor(titleScore);
         stage.addActor(pontosLabel);
