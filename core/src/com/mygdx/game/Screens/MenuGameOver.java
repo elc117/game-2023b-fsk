@@ -30,8 +30,6 @@ public class MenuGameOver implements Screen {
     private Hud hud;
     private ImageButton btMenu;
 
-
-
     public MenuGameOver(MyGdxGame jogo, Hud hud) {
         batch = new SpriteBatch();
         this.jogo = jogo;
@@ -42,7 +40,7 @@ public class MenuGameOver implements Screen {
 
         // Cria sistema de câmera e resize
         camera = new OrthographicCamera();
-        ViewPortCamera = new StretchViewport(800, 480, camera);
+        ViewPortCamera = new StretchViewport(Variaveis.WIDTH, Variaveis.HEIGTH, camera);
 
         background = new Texture(Gdx.files.internal("MenuPrincipal/FundoIA.png"));
 
@@ -51,9 +49,7 @@ public class MenuGameOver implements Screen {
         btRestartImage = new TextureRegionDrawable(new Texture("MenuGameOver/BtnJogarNovamente.png"));
 
         btAddLeaderBoardImage = new TextureRegionDrawable(new Texture("MenuGameOver/BtnAddLeaderBoard.png"));
-
     }
-
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
@@ -89,14 +85,12 @@ public class MenuGameOver implements Screen {
         btAddLeaderBoard.setSize(buttonWidth, buttonHeight);
         btAddLeaderBoard.setPosition(centerX + 150, centerY - 140);
 
-
         // Imagem do titulo "Quarta Colonia"
         Image titleImage = new Image(new Texture("MenuGameOver/LabelGameOver.png"));
         titleImage.setSize(421f, 84f); // Ajuste o tamanho da imagem conforme necessário
         float titleX = Gdx.graphics.getWidth() / 2f - titleImage.getWidth() / 2;
         float titleY = Gdx.graphics.getHeight() - 120; // Ajuste a posição vertical conforme necessário
         titleImage.setPosition(titleX, titleY);
-
 
         // Imagem do titulo "ScoreBoard"
         Image titleScore = new Image(new Texture("MenuGameOver/ScoreBoard.png"));
@@ -118,9 +112,6 @@ public class MenuGameOver implements Screen {
         Label tempoLabel = new Label(String.valueOf(hud.getTempoCounter()) + " sec", style);
         tempoLabel.setPosition(titleScoreX + 160, titleScoreY + 100);
 
-
-
-
         // Adiciona os ImageButtons e titles à cena
         stage.addActor(btRestart);
         stage.addActor(btAddLeaderBoard);
@@ -131,7 +122,6 @@ public class MenuGameOver implements Screen {
         stage.addActor(acertosLabel);
         stage.addActor(tempoLabel);
     }
-
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -146,23 +136,19 @@ public class MenuGameOver implements Screen {
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
-
     @Override
     public void resize(int width, int height) {
         // Aplica a configuração definida de resize
         ViewPortCamera.update(width, height);
     }
-
     @Override
     public void pause() {
 
     }
-
     @Override
     public void resume() {
 
     }
-
     @Override
     public void hide() {
 
@@ -173,7 +159,6 @@ public class MenuGameOver implements Screen {
         background.dispose();
         batch.dispose();
     }
-
     private void visualization(){
         Variaveis.setPerdeu(false);
         if (btRestart.isPressed()) {
@@ -182,7 +167,6 @@ public class MenuGameOver implements Screen {
             Variaveis.acertos = 0; // Reinicia todos os acertos
             jogo.setScreen(new PlayGame(jogo));
         }
-
         if (btAddLeaderBoard.isPressed()) {
             this.dispose();
             jogo.setScreen(new MenuPrincipal(jogo));

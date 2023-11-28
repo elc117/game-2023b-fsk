@@ -24,11 +24,9 @@ public class Hud {
     private int pontos;
     private int acertos;
     private long tempoAnterior;
-
     BitmapFont bfPontos;
     BitmapFont bfAcertos;
     BitmapFont bfTempo;
-
     public Hud() {
         bfPontos = new BitmapFont();
         bfAcertos = new BitmapFont();
@@ -43,7 +41,6 @@ public class Hud {
     public void draw(SpriteBatch batch) {
         if (!Variaveis.perdeu)
             this.tempoCounter = (TimeUtils.millis() - tempoAnterior) / 1000;
-
 
         bfPontos.draw(batch, "Pontos: " + Variaveis.pontos, 10, Gdx.graphics.getHeight() - 1);
         bfAcertos.draw(batch, "Acertos: " + Variaveis.acertos, (float) Gdx.graphics.getWidth() / 2 - 10, Gdx.graphics.getHeight() - 1);

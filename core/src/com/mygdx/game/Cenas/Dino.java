@@ -13,7 +13,6 @@ public class Dino {
     Texture textureDinoJumping; // Textura para o personagem subindo
     boolean isFalling = false;
     boolean isJumping = false;
-
     Vector2 velocity = new Vector2();
     // Posições de localização e tamanho usando os dados de um retangulo
     Rectangle retangulo = new Rectangle(Variaveis.DinoX, Variaveis.DinoY, 40, 40);
@@ -23,7 +22,6 @@ public class Dino {
         textureDinoFalling = new Texture(Gdx.files.internal("Textures/dino_caindo.png"));
         textureDinoJumping = new Texture(Gdx.files.internal("Textures/dino_subindo.png"));
     }
-
     public void draw(SpriteBatch batch) {
         if (!Variaveis.perdeu) {
             velocity.y -= Variaveis.Gravity; // Velocidade cai
@@ -34,13 +32,11 @@ public class Dino {
                 velocity.y = Variaveis.DinoAntigravity;
             }
         }
-
         // Delimita o tamanho
         if (retangulo.y >= Gdx.graphics.getHeight() - 40 || retangulo.y <= Variaveis.floorHeight) {
             // Perde o jogo
             Variaveis.setPerdeu(true);
         }
-
         if (velocity.y < 0) {
             // O personagem está caindo
             isFalling = true;
@@ -54,7 +50,6 @@ public class Dino {
             isFalling = false;
             isJumping = false;
         }
-
         // Escolhe a textura com base no movimento vertical
         Texture currentTexture;
         if (isFalling) {
@@ -64,16 +59,13 @@ public class Dino {
         } else {
             currentTexture = textureDino;
         }
-
         batch.draw(currentTexture, retangulo.x, retangulo.y);
     }
-
     void dispose() {
         textureDino.dispose();
         textureDinoFalling.dispose();
         textureDinoJumping.dispose();
     }
-
     public Rectangle getDinoRectangle() {
         return this.retangulo;
     }

@@ -17,11 +17,11 @@ import java.util.ArrayList;
 public class Quiz {
     private boolean isActive = true;
     Texture texturePergunta;
+    Texture textureBackgroundPergunta;
     ArrayList<Rectangle> retangulos;
 
     ArrayList<Rectangle> ossosMeio;
     private float posicao;
-    private int ID;
     private boolean colision;
     private BitmapFont font;
 
@@ -37,7 +37,7 @@ public class Quiz {
         font = new BitmapFont();
 
         texturePergunta = new Texture(Gdx.files.internal("Textures/Choice.png"));
-        this.ID = Variaveis.lastIndex + 1;
+        textureBackgroundPergunta = new Texture(Gdx.files.internal("Textures/backgroundChoice.png"));
 
         this.pergunta = new Pergunta(Variaveis.lastIndex);
 
@@ -50,7 +50,6 @@ public class Quiz {
             posicao += 165;
         }
 
-
         velocity.x = Variaveis.PerguntaVelocity;
 
         if (Variaveis.lastIndex + 1 > Variaveis.numPerguntas - 1) {
@@ -59,23 +58,21 @@ public class Quiz {
             Variaveis.lastIndex++;
         }
     }
-
     public void draw(SpriteBatch batch) {
         if (!Variaveis.perdeu) {
             for (Rectangle r : this.retangulos) {
                 r.x -= velocity.x;
             }
-
             for (Rectangle osso : ossosMeio) {
                 osso.x -= velocity.x;
             }
 
             // Adiciona o enunciado
             float fontPosition = ((float)Gdx.graphics.getWidth() / 2) - getCenterWidth(pergunta.getEnunciado()); // Centralização
+            batch.draw(textureBackgroundPergunta, 0, 11);
+            font.draw(batch, pergunta.getEnunciado(), fontPosition, 25);
 
-            font.draw(batch, pergunta.getEnunciado(), fontPosition, 30);
-
-            // Adiciona a pergunta
+            // Adiciona as alternativas
             int i = 0;
             for (Rectangle r : this.retangulos) {
                 batch.draw(texturePergunta, r.x, r.y, texturePergunta.getWidth(), texturePergunta.getHeight());
@@ -85,7 +82,6 @@ public class Quiz {
             }
         }
     }
-
     public boolean virifyColisions(Rectangle dino) {
         int i = 0;
         boolean colided = false;
@@ -114,29 +110,19 @@ public class Quiz {
         }
         return colided;
     }
-
     public float getPosition() {
         return this.retangulos.get(0).x;
     }
-
     public void setActive(boolean status) {
         this.isActive = status;
     }
-
     public boolean getActive() {
         return this.isActive;
     }
-
-    public int getId() {
-        return this.ID;
-    }
-
     private float getCenterWidth (String alternativa) {
         GlyphLayout layout = new GlyphLayout();
         layout.setText(font, alternativa);
 
         return layout.width / 2;
     }
-
-
 }
