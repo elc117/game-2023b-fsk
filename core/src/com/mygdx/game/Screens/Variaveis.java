@@ -41,7 +41,6 @@ public class Variaveis {
     public static void setPerdeu(boolean status) {
         perdeu = status;
     }
-
 }
 
 

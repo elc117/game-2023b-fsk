@@ -2,9 +2,11 @@ package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -15,6 +17,9 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Cenas.Hud;
 import com.mygdx.game.MyGdxGame;
+
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class MenuGameOver implements Screen {
     private MyGdxGame jogo;
@@ -30,6 +35,8 @@ public class MenuGameOver implements Screen {
     private Hud hud;
     private ImageButton btMenu;
     private String name;
+    private Image textFieldBackground;
+    private TextField textField;
 
     private Long tempoCounter;
 
@@ -45,16 +52,40 @@ public class MenuGameOver implements Screen {
         camera = new OrthographicCamera();
         ViewPortCamera = new StretchViewport(Variaveis.WIDTH, Variaveis.HEIGTH, camera);
 
-        background = new Texture(Gdx.files.internal("MenuPrincipal/FundoIA.png"));
+        background = new Texture(Gdx.files.internal("MainMenuScreen/FundoIA.png"));
 
         // Carrega as texturas dos botões e labels
 
         btRestartImage = new TextureRegionDrawable(new Texture("MenuGameOver/BtnJogarNovamente.png"));
 
         btAddLeaderBoardImage = new TextureRegionDrawable(new Texture("MenuGameOver/BtnAddLeaderBoard.png"));
+
+        // Carrega a textura para o fundo do TextField
+        Texture textFieldBgTexture = new Texture("MenuGameOver/TextFieldBackground.png"); // Substitua "path_para_o_background.png" pelo caminho real da sua textura
+        TextureRegionDrawable textFieldBgDrawable = new TextureRegionDrawable(new TextureRegion(textFieldBgTexture));
+
+        // Cria a Image para o fundo do TextField
+        textFieldBackground = new Image(textFieldBgDrawable);
+        textFieldBackground.setSize(220f, 40f);  // Ajuste o tamanho conforme necessário
+        textFieldBackground.setPosition(Gdx.graphics.getWidth() / 2f - 110f, Gdx.graphics.getHeight() / 2f - 220f);  // Ajuste a posição conforme necessário
+        TextField.TextFieldFilter filter = new TextField.TextFieldFilter() {
+            @Override
+            public boolean acceptChar(TextField textField, char c) {
+                // Permite caracteres enquanto o comprimento do texto for menor que 10
+                return textField.getText().length() < 10;
+            }
+        };
+
+
+
+        textField = new TextField("", new TextField.TextFieldStyle(new BitmapFont(), Color.WHITE, null, null, null));
+        textField.setSize(220f, 40f);  // Ajuste o tamanho conforme necessário
+        textField.setPosition(Gdx.graphics.getWidth() / 2f - 100f, Gdx.graphics.getHeight() / 2f - 215f);  // Ajuste a posição conforme necessário
+        textField.setTextFieldFilter(filter);  // Aplica o filtro
     }
     @Override
     public void show() {
+
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
@@ -69,7 +100,7 @@ public class MenuGameOver implements Screen {
 
         btMenu.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                jogo.setScreen(new MenuPrincipal(jogo));
+                jogo.setScreen(new MainMenuScreen(jogo));
                 dispose();
             }
         });
@@ -102,6 +133,11 @@ public class MenuGameOver implements Screen {
         float titleScoreY = Gdx.graphics.getHeight() - 310; // Ajuste a posição vertical conforme necessário
         titleScore.setPosition(titleScoreX, titleScoreY);
 
+        // Label de Nome
+        Image labelNome = new Image(new Texture("MenuGameOver/LabelNome.png"));
+        labelNome.setSize(58f, 15f);  // Ajuste o tamanho conforme necessário
+        labelNome.setPosition(Gdx.graphics.getWidth() / 2f - 170f, Gdx.graphics.getHeight() / 2f - 205f);
+
         // Labels de pontuação, acertos e tempo
         Label.LabelStyle style = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
         style.font.getData().setScale(2f);
@@ -125,6 +161,9 @@ public class MenuGameOver implements Screen {
         stage.addActor(pontosLabel);
         stage.addActor(acertosLabel);
         stage.addActor(tempoLabel);
+        stage.addActor(textFieldBackground);
+        stage.addActor(textField);
+        stage.addActor(labelNome);
     }
     @Override
     public void render(float delta) {
@@ -163,7 +202,37 @@ public class MenuGameOver implements Screen {
         background.dispose();
         batch.dispose();
     }
-    private void visualization(){
+
+    public void salvarLeaderboard(String nome, long tempoCounter){
+        FileHandle file = Gdx.files.local("LeaderBoard.csv");
+        // Verifique se o arquivo já existe
+        boolean fileExists = file.exists();
+
+        // Use FileWriter para escrever no arquivo
+        try {
+            FileWriter fileWriter = new FileWriter(file.file(), true); // O segundo parâmetro true indica que estamos anexando ao arquivo
+
+            // Se o arquivo não existia antes, adicione um cabeçalho
+            if (!fileExists) {
+                fileWriter.append("Nome,Tempo,Pontos,Acertos\n");
+            }
+            // Adicione os dados ao arquivo
+            fileWriter.append(nome)
+                    .append(',')
+                    .append(String.valueOf(tempoCounter))
+                    .append(',')
+                    .append(String.valueOf(Variaveis.pontos))
+                    .append(',')
+                    .append(String.valueOf(Variaveis.acertos))
+                    .append('\n');
+            // Feche o FileWriter
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void visualization() {
         Variaveis.setPerdeu(false);
         if (btRestart.isPressed()) {
             this.dispose();
@@ -171,11 +240,20 @@ public class MenuGameOver implements Screen {
             Variaveis.acertos = 0; // Reinicia todos os acertos
             jogo.setScreen(new PlayGame(jogo));
         }
-        if (btAddLeaderBoard.isPressed()) {
+        if (btAddLeaderBoard.isPressed() && !textField.getText().isEmpty()) {
+            setName(textField.getText());
             this.dispose();
-            hud.salvarLeaderboard(name, tempoCounter);
+            salvarLeaderboard(name, tempoCounter);
             //Falta receber o nome ainda
-            jogo.setScreen(new MenuPrincipal(jogo));
+            jogo.setScreen(new MainMenuScreen(jogo));
         }
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 }

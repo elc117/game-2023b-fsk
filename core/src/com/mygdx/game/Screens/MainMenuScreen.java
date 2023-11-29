@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MyGdxGame;
 
-public class MenuPrincipal implements Screen {
+public class MainMenuScreen implements Screen {
     private MyGdxGame jogo;
     private SpriteBatch batch;
     private Stage stage;
@@ -23,21 +23,21 @@ public class MenuPrincipal implements Screen {
     private Viewport ViewPortCamera;
     private TextureRegionDrawable btIniciarImage;
     private TextureRegionDrawable btPlacarImage;
-    private String name; // Nome do jogador
 
 
-    public MenuPrincipal(MyGdxGame jogo) {
+
+    public MainMenuScreen(MyGdxGame jogo) {
         batch = new SpriteBatch();
         this.jogo = jogo;
         // Cria sistema de câmera e resize
         camera = new OrthographicCamera();
         ViewPortCamera = new StretchViewport(Variaveis.WIDTH, Variaveis.HEIGTH, camera);
 
-        background = new Texture(Gdx.files.internal("MenuPrincipal/FundoIA.png"));
+        background = new Texture(Gdx.files.internal("MainMenuScreen/FundoIA.png"));
 
         // Carrega as texturas dos botões e labels
-        btIniciarImage = new TextureRegionDrawable(new Texture("MenuPrincipal/btnJogar.png"));
-        btPlacarImage = new TextureRegionDrawable(new Texture("MenuPrincipal/btnPlacar.png"));
+        btIniciarImage = new TextureRegionDrawable(new Texture("MainMenuScreen/btnJogar.png"));
+        btPlacarImage = new TextureRegionDrawable(new Texture("MainMenuScreen/btnPlacar.png"));
 
     }
     @Override
@@ -63,7 +63,7 @@ public class MenuPrincipal implements Screen {
         btPlacar.setPosition(centerX, centerY - 100);
 
         // Imagem do titulo "Quarta Colonia"
-        Image titleImage = new Image(new Texture("MenuPrincipal/LabelQuartaColonia.png"));
+        Image titleImage = new Image(new Texture("MainMenuScreen/LabelQuartaColonia.png"));
         titleImage.setSize(421f, 84f); // Ajuste o tamanho da imagem conforme necessário
         float titleX = Gdx.graphics.getWidth() / 2f - titleImage.getWidth() / 2;
         float titleY = Gdx.graphics.getHeight() - 120; // Ajuste a posição vertical conforme necessário
@@ -117,8 +117,5 @@ public class MenuPrincipal implements Screen {
         if (btPlacar.isPressed()) {
             jogo.setScreen(new Placar(jogo));
         }
-    }
-    public void setName(String name) {
-        this.name = name;
     }
 }

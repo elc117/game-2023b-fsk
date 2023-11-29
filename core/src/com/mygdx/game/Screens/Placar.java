@@ -45,7 +45,7 @@ public class Placar implements Screen {
         camera = new OrthographicCamera();
         ViewPortCamera = new StretchViewport(800, 480, camera);
 
-        background = new Texture(Gdx.files.internal("MenuPrincipal/FundoIA.png"));
+        background = new Texture(Gdx.files.internal("MainMenuScreen/FundoIA.png"));
         font = new BitmapFont();
         jogadores = carregarJogadores();
     }
@@ -55,21 +55,21 @@ public class Placar implements Screen {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        btVoltar = new ImageButton(new TextureRegionDrawable(new Texture("MenuPrincipal/btnVoltar.png")));
+        btVoltar = new ImageButton(new TextureRegionDrawable(new Texture("Placar/btnVoltar.png")));
         btVoltar.setSize(150f, 50f);
         btVoltar.setPosition(20, Gdx.graphics.getHeight() - 70);
 
         btVoltar.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                jogo.setScreen(new MenuPrincipal(jogo));
+                jogo.setScreen(new MainMenuScreen(jogo));
                 dispose();
             }
         });
 
 
         // Imagem do titulo "ScoreBoard"
-        Image titlePlacar = new Image(new Texture("MenuPrincipal/layoutPlacar.png"));
-        titlePlacar.setSize(500f, 330f); // Ajuste o tamanho da imagem conforme necessário
+        Image titlePlacar = new Image(new Texture("Placar/layoutPlacar.png"));
+        titlePlacar.setSize(524f, 347f); // Ajuste o tamanho da imagem conforme necessário
         float titleScoreX = Gdx.graphics.getWidth() / 2f - titlePlacar.getWidth() / 2;
         float titleScoreY = Gdx.graphics.getHeight() - 420f; // Ajuste a posição vertical conforme necessário
         titlePlacar.setPosition(titleScoreX, titleScoreY);
@@ -107,17 +107,19 @@ public class Placar implements Screen {
         for (int i = 0; i < displayedRows; i++) {
             Jogador jogador = jogadores.get(i);
 
+            table.add().width(80);
+
             Label nomeLabel = new Label(jogador.getNome(), labelStyle);
-            table.add(nomeLabel).padBottom(espacamento).padLeft(-10f);  // Ajuste o valor conforme necessário para o espaçamento horizontal
+            table.add(nomeLabel).width(186).padBottom(espacamento);  // Define uma largura fixa para a célula
 
             Label pontosLabel = new Label(String.valueOf(jogador.getPontos()), labelStyle);
-            table.add(pontosLabel).padBottom(espacamento).padLeft(100f);  // Ajuste o valor conforme necessário para o espaçamento horizontal
+            table.add(pontosLabel).width(135).padBottom(espacamento);  // Define uma largura fixa para a célula
 
             Label tempoLabel = new Label(String.valueOf(jogador.getTempo()) + "s", labelStyle);
-            table.add(tempoLabel).padBottom(espacamento).padLeft(110f);  // Ajuste o valor conforme necessário para o espaçamento horizontal
+            table.add(tempoLabel).width(102).padBottom(espacamento);  // Define uma largura fixa para a célula
 
             Label acertosLabel = new Label(String.valueOf(jogador.getAcertos()), labelStyle);
-            table.add(acertosLabel).padBottom(espacamento).padLeft(110f);  // Ajuste o valor conforme necessário para o espaçamento horizontal
+            table.add(acertosLabel).width(107).padBottom(espacamento);  // Define uma largura fixa para a célula
 
             // Adiciona uma nova linha para a próxima entrada
             table.row();
@@ -125,7 +127,6 @@ public class Placar implements Screen {
 
         stage.addActor(table);
     }
-
 
 
 
