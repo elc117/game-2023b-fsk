@@ -6,18 +6,24 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Screens.Variaveis;
+import java.util.Collections;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 // A classe Quiz é responsável por adicionar as questões na tela,
 // selecionar aleatoriamente as questões e verificar se o jogador
 // acertou.
 public class Quiz {
     private boolean isActive = true;
+    private int deslocamento;
+    private int certa;
     Texture texturePergunta;
     Texture textureBackgroundPergunta;
     Sound certoAudio;
@@ -27,15 +33,15 @@ public class Quiz {
     private float posicao;
     private boolean colision;
     private BitmapFont font;
-
     Pergunta pergunta;
-
+    ParticleEffect particles = new ParticleEffect();
     Vector2 velocity = new Vector2();
 
     public Quiz() {
         // Atualiza a questão
         retangulos = new ArrayList<Rectangle>();
         ossosMeio = new ArrayList<Rectangle>();
+        Random random = new Random();
 
         font = new BitmapFont();
 
@@ -45,7 +51,17 @@ public class Quiz {
         certoAudio = Gdx.audio.newSound(Gdx.files.internal("Sounds/certo.mp3"));
         erradoAudio = Gdx.audio.newSound(Gdx.files.internal("Sounds/errado.mp3"));
 
-        this.pergunta = new Pergunta(Variaveis.lastIndex);
+        // Sorteia uma pergunta, dentro dos limites propostos
+        int index = Variaveis.lastIndex;
+        while (index == Variaveis.lastIndex) {
+            index = random.nextInt(Variaveis.numPerguntas); // Gera index da pergunta
+        }
+
+        // Sorteia o deslocamento das alternativas
+        this.deslocamento = random.nextInt(3);
+
+        this.pergunta = new Pergunta(index);
+        Variaveis.lastIndex = index;
 
         colision = false;
 
@@ -57,12 +73,6 @@ public class Quiz {
         }
 
         velocity.x = Variaveis.PerguntaVelocity;
-
-        if (Variaveis.lastIndex + 1 > Variaveis.numPerguntas - 1) {
-            Variaveis.lastIndex = 0;
-        } else {
-            Variaveis.lastIndex++;
-        }
     }
     public void draw(SpriteBatch batch) {
         if (!Variaveis.perdeu) {
@@ -77,17 +87,28 @@ public class Quiz {
             batch.draw(textureBackgroundPergunta, 0, 11);
             font.draw(batch, pergunta.getEnunciado(), fontPosition, 25);
 
-            // Adiciona as alternativas
-            int i = 0;
+            // Salva a resposta certa
+            this.certa = (this.pergunta.getCerta() + this.deslocamento + 3) % 3;
+
+            // Faz a copia das alternativas e faz rotate, alterando suas posições
+            List<String> alternativas = new ArrayList<String>();
+
+            for(int alt = 0; alt < pergunta.getNumAlternativas(); alt++) {
+                alternativas.add(pergunta.getAlternativa(alt));
+            }
+
+            Collections.rotate(alternativas, this.deslocamento);
+
+            int i =0;
             for (Rectangle r : this.retangulos) {
                 batch.draw(texturePergunta, r.x, r.y, texturePergunta.getWidth(), texturePergunta.getHeight());
-                font.draw(batch, pergunta.getAlternativa(i), r.x + ((float)texturePergunta.getWidth() / 2) - (getCenterWidth(pergunta.getAlternativa(i))),
+                font.draw(batch, alternativas.get(i), r.x + ((float)texturePergunta.getWidth() / 2) - (getCenterWidth(alternativas.get(i))),
                 r.y + 45);
                 i++;
             }
         }
     }
-    public boolean virifyColisions(Rectangle dino) {
+    public boolean virifyColisions(Rectangle dino, SpriteBatch batch) {
         int i = 0;
         boolean colided = false;
 
@@ -101,7 +122,7 @@ public class Quiz {
                 i++;
             }
 
-            if (pergunta.getCerta() == i && colided) {
+            if (this.certa == i && colided) {
                 certoAudio.play(Variaveis.SoundVolume);
                 Variaveis.pontos += 100;
                 Variaveis.acertos++;

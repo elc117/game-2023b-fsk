@@ -1,13 +1,11 @@
 package com.mygdx.game.Screens;
 
-import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.Cenas.Floor;
@@ -29,7 +27,6 @@ public class PlayGame implements Screen {
     private ArrayList<Quiz> perguntas;
     private long tempoInicial;
     Texture background;
-    ParticleEffect particle;
 
     public PlayGame(MyGdxGame jogo) {
         this.jogo = jogo;
@@ -76,7 +73,6 @@ public class PlayGame implements Screen {
         controlCamera();
 
         batch.draw(background, 0, 0);  // Adiciona background
-
         addCenario(); // Adiciona todos os objetos, caso não existir colisão
 
         dino.draw(batch); // Adiciona personagem dino
@@ -140,7 +136,6 @@ public class PlayGame implements Screen {
                 if (Variaveis.addNextObstacle)
                     obstaculos.add(new Obstaculo());
             }
-
             if (this.obstaculos.size() > 1) {
                 for (Obstaculo ob : obstaculos) {
                     if (ob.getPosition() + 90 <= 0) {
@@ -198,7 +193,7 @@ public class PlayGame implements Screen {
     private void controlQuiz() {
         int last = perguntas.size() - 1;
         if ((float) (TimeUtils.millis() - this.tempoInicial) / 1000 >= Variaveis.tempoEntrePerguntas && perguntas.get(last).getPosition() > 0) {
-            if (perguntas.get(last).getPosition() > 0 && !perguntas.get(last).virifyColisions(dino.getDinoRectangle())) {
+            if (perguntas.get(last).getPosition() > 0 && !perguntas.get(last).virifyColisions(dino.getDinoRectangle(), batch)) {
                 Variaveis.addNextObstacle = false;
                 perguntas.get(last).draw(batch);
             } else {

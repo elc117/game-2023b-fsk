@@ -238,6 +238,7 @@ public class MenuGameOver implements Screen {
             this.dispose();
             Variaveis.pontos = 0; // Reinicia toda a pontuação
             Variaveis.acertos = 0; // Reinicia todos os acertos
+            Variaveis.lastIndex = 0; // Reinicia o index padrão de pergunta
             jogo.setScreen(new PlayGame(jogo));
         }
         if (btAddLeaderBoard.isPressed() && !textField.getText().isEmpty()) {
