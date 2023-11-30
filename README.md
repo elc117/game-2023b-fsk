@@ -14,7 +14,7 @@ Quando o jogador consegue desviar dos obstáculos, é contabilizado 10 pontos. Q
 Para cada pergunta respondida incorretamente, é descontado 100 pontos, até que o jogador alcance 0 pontos.  
 
 
-##Assets
+## Assets
 
 Dino: https://opengameart.org/content/dino-spaceship-flying-character
 
