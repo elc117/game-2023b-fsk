@@ -14,6 +14,9 @@ Quando o jogador consegue desviar dos obstáculos, é acrescido 10 pontos. Quand
 ## Linguagem usada
 A linguagem utilizada no desenvolvimento do jogo foi a Java, em conjunto com a biblioteca de desenvolvimento de jogo libGDX. 
 
+## Diagramas
+![Diagramas de classes](https://github.com/elc117/game-2023b-fsk/blob/master/Diagrama%20de%20classes.jpg)
+
 ## Assets
 #### Texturas
 * Dino: https://opengameart.org/content/dino-spaceship-flying-character
